@@ -1,1 +1,22 @@
-<h1>{{title}}</h1>
+<mat-toolbar color="primary">
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with menu icon"
+  >
+    <mat-icon>store</mat-icon>
+  </button>
+  <span>FE Ecomerce CRUD</span>
+  <span class="example-spacer"></span>
+
+  <div class="example-button-row">
+    <button mat-raised-button color="warn">Product</button>
+    <button mat-flat-button color="warn">Customer</button>
+    <button mat-flat-button color="warn">Order</button>
+    <button mat-flat-button color="warn">Buy Order</button>
+  </div>
+
+
+</mat-toolbar>
+
+<app-product></app-product>

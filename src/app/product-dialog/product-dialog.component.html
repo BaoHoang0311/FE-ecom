@@ -1,0 +1,71 @@
+<h1 mat-dialog-title>Add Product</h1>
+<div mat-dialog-content>
+  <form [formGroup]="productForm">
+    <mat-form-field class="example-full-width">
+      <mat-label>FullName</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="productName"
+        [errorStateMatcher]="matcher"
+        placeholder="Product Name"
+      />
+      <mat-error
+        *ngIf="
+          productnameFormControl.hasError('minlength') &&
+          !productnameFormControl.hasError('required')
+        "
+      >
+        Min length = 3
+      </mat-error>
+      <mat-error *ngIf="productnameFormControl.hasError('required')">
+        <strong>required name</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Ammount</mat-label>
+      <input
+        type="number"
+        min="1"
+        max="500"
+        formControlName="productAmmount"
+        matInput
+        [formControl]="ammountFormControl"
+        [errorStateMatcher]="matcher"
+        placeholder="Product Name"
+      />
+      <mat-error
+        *ngIf="
+          ammountFormControl.hasError('min') ||
+          (ammountFormControl.hasError('max') &&
+            !ammountFormControl.hasError('required'))
+        "
+      >
+        <strong>Range(0,500)</strong>
+      </mat-error>
+      <mat-error *ngIf="ammountFormControl.hasError('required')">
+        <strong>required number</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+
+<!-- button -->
+<div mat-dialog-actions [align]="'end'">
+  <button
+    mat-raised-button
+    color="warn"
+    style="margin-right: 5px"
+    mat-dialog-close
+  >
+    Close
+  </button>
+  <button 
+  mat-raised-button color="primary" 
+  style="margin-right: 5px"
+  (click)="addProduct()"
+  >
+    Add
+  </button>
+</div>

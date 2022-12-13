@@ -1,0 +1,12 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+    
+  .example-button-row {
+    display: table-cell;
+    max-width: 600px;
+  }
+
+  .example-button-row button {
+    margin-right: 14px;
+  }
