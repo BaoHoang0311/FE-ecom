@@ -1,71 +1,54 @@
-<h1 mat-dialog-title>Add Product</h1>
-<div mat-dialog-content>
-  <form [formGroup]="productForm">
-    <mat-form-field class="example-full-width">
-      <mat-label>FullName</mat-label>
+<div>
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Full Name</label>
       <input
         type="text"
-        matInput
-        [formControl]="productName"
-        [errorStateMatcher]="matcher"
-        placeholder="Product Name"
+        formControlName="productName"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f['productName'].errors }"
       />
-      <mat-error
-        *ngIf="
-          productnameFormControl.hasError('minlength') &&
-          !productnameFormControl.hasError('required')
-        "
+      <div
+        *ngIf="submitted && f['productName'].errors"
+        class="invalid-feedback"
       >
-        Min length = 3
-      </mat-error>
-      <mat-error *ngIf="productnameFormControl.hasError('required')">
-        <strong>required name</strong>
-      </mat-error>
-    </mat-form-field>
+        <div *ngIf="f['productName'].errors['required']">
+          Fullname is required
+        </div>
+        <div *ngIf="f['productName'].errors['minlength']">
+          Ký tự phải lớn hơn 3
+        </div>
+      </div>
+    </div>
 
-    <mat-form-field class="example-full-width">
-      <mat-label>Ammount</mat-label>
+    <div class="form-group">
+      <label>Ammount</label>
       <input
-        type="number"
-        min="1"
-        max="500"
-        formControlName="productAmmount"
-        matInput
-        [formControl]="ammountFormControl"
-        [errorStateMatcher]="matcher"
-        placeholder="Product Name"
+        type="text"
+        formControlName="ammount"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f['ammount'].errors }"
       />
-      <mat-error
-        *ngIf="
-          ammountFormControl.hasError('min') ||
-          (ammountFormControl.hasError('max') &&
-            !ammountFormControl.hasError('required'))
-        "
-      >
-        <strong>Range(0,500)</strong>
-      </mat-error>
-      <mat-error *ngIf="ammountFormControl.hasError('required')">
-        <strong>required number</strong>
-      </mat-error>
-    </mat-form-field>
-  </form>
-</div>
+      <div *ngIf="submitted && f['ammount'].errors" class="invalid-feedback">
+        <div *ngIf="f['ammount'].errors['required']">Ammount is required</div>
+        <div *ngIf="f['ammount'].errors['min'] || f['ammount'].errors['max']">
+          Range(1,500)
+        </div>
+      </div>
+    </div>
 
-<!-- button -->
-<div mat-dialog-actions [align]="'end'">
-  <button
-    mat-raised-button
-    color="warn"
-    style="margin-right: 5px"
-    mat-dialog-close
-  >
-    Close
-  </button>
-  <button 
-  mat-raised-button color="primary" 
-  style="margin-right: 5px"
-  (click)="addProduct()"
-  >
-    Add
-  </button>
+    <div class="form-group">
+      <button type="button" (click)="onReset()" class="btn btn-warning">
+        Reset
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary float-right"
+        mat-raised-button
+        color="warn"
+      >
+        Add
+      </button>
+    </div>
+  </form>
 </div>

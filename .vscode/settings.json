@@ -1,4 +1,7 @@
 {
-    "prettier.bracketSameLine": true,
-    "prettier.printWidth": 100
+    "prettier.printWidth": 100,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.bracketSpacing": true,
+    "prettier.bracketSameLine": true
 }
