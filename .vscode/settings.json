@@ -1,7 +1,10 @@
 {
-    "prettier.printWidth": 100,
+    "prettier.printWidth": 5000,
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "prettier.bracketSpacing": true,
-    "prettier.bracketSameLine": true
+    "prettier.bracketSameLine": true,
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    }
 }

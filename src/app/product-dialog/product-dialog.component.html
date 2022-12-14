@@ -1,21 +1,13 @@
-<div>
+<h1>{{headerForm}}</h1>
+<div class="register-form">
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label>Full Name</label>
-      <input
-        type="text"
-        formControlName="productName"
-        class="form-control"
-        [ngClass]="{ 'is-invalid': submitted && f['productName'].errors }"
-      />
-      <div
-        *ngIf="submitted && f['productName'].errors"
-        class="invalid-feedback"
-      >
-        <div *ngIf="f['productName'].errors['required']">
-          Fullname is required
-        </div>
-        <div *ngIf="f['productName'].errors['minlength']">
+      <input type="text" formControlName="fullName" class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f['fullName'].errors }" />
+      <div *ngIf="submitted && f['fullName'].errors" class="invalid-feedback">
+        <div *ngIf="f['fullName'].errors['required']">Fullname is required</div>
+        <div *ngIf="f['fullName'].errors['minlength']">
           Ký tự phải lớn hơn 3
         </div>
       </div>
@@ -23,15 +15,11 @@
 
     <div class="form-group">
       <label>Ammount</label>
-      <input
-        type="text"
-        formControlName="ammount"
-        class="form-control"
-        [ngClass]="{ 'is-invalid': submitted && f['ammount'].errors }"
-      />
-      <div *ngIf="submitted && f['ammount'].errors" class="invalid-feedback">
-        <div *ngIf="f['ammount'].errors['required']">Ammount is required</div>
-        <div *ngIf="f['ammount'].errors['min'] || f['ammount'].errors['max']">
+      <input type="number" formControlName="amount" class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f['amount'].errors }" />
+      <div *ngIf="submitted && f['amount'].errors" class="invalid-feedback">
+        <div *ngIf="f['amount'].errors['required']">Ammount is required</div>
+        <div *ngIf="f['amount'].errors['min'] || f['amount'].errors['max']">
           Range(1,500)
         </div>
       </div>
@@ -41,13 +29,8 @@
       <button type="button" (click)="onReset()" class="btn btn-warning">
         Reset
       </button>
-      <button
-        type="submit"
-        class="btn btn-primary float-right"
-        mat-raised-button
-        color="warn"
-      >
-        Add
+      <button type="submit" class="btn btn-primary float-right" mat-raised-button color="warn">
+        {{actionBtn}}
       </button>
     </div>
   </form>
