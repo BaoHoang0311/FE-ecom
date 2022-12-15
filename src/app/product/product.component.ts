@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../services/product/api.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,7 +14,7 @@ import { ProductDiaglogDeleteComponent } from './product-diaglog-delete/product-
 })
 export class ProductComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'fullName', 'amount', 'action'];
+  displayedColumns: string[] = ['id', 'fullName', 'amount', 'Action'];
   dataSource !: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator !: MatPaginator;
@@ -38,11 +38,21 @@ export class ProductComponent implements OnInit {
   }
 
   openDialogDelProduct(row: any) {
-    this.dialog.open(ProductDiaglogDeleteComponent, {
-      width: '250px',
+    this.dialog.open(ProductDiaglogDeleteComponent, { width: '300px', data: row })
+      .afterClosed().subscribe(val => {
+        if (val == 'abcd') {
+          this.getAllProducts();
+        }
+      });
+  }
+
+  editProduct(row: any) {
+    this.dialog.open(ProductDialogComponent, {
+      width: '30%',
+      height: '50%',
       data: row
     }).afterClosed().subscribe(val => {
-      if (val == 'deleteProduct') {
+      if (val == 'updateProduct') {
         this.getAllProducts();
       }
     });
@@ -59,17 +69,6 @@ export class ProductComponent implements OnInit {
         },
         error: (err) => { console.log(err); }
       });
-  }
-
-  editProduct(row: any) {
-    this.dialog.open(ProductDialogComponent, {
-      width: '50%',
-      data: row
-    }).afterClosed().subscribe(val => {
-      if (val == 'updateProduct') {
-        this.getAllProducts();
-      }
-    });
   }
 
   applyFilter(event: Event) {

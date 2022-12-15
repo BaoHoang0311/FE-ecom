@@ -1,1 +1,50 @@
-<p>customer-diaglog works!</p>
+<h1>{{headerForm}}</h1>
+<div class="register-form">
+    <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" formControlName="fullName" class="form-control"
+                [ngClass]="{'is-invalid': submitted && f['fullName'].errors }" />
+            <div *ngIf="submitted && f['fullName'].errors" class="invalid-feedback">
+                <div *ngIf="f['fullName'].errors['required']">Fullname is required</div>
+                <div *ngIf="f['fullName'].errors['minlength']">
+                    Ký tự phải lớn hơn 3
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>email</label>
+            <input type="email" formControlName="email" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                <div *ngIf="f['email'].errors['required']">email is required</div>
+                <div *ngIf="f['email'].errors['email']">
+                    Yêu cầu nhập đúng địa chỉ email
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" formControlName="phone" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }" />
+            <div *ngIf="submitted && f['phone'].errors" class="invalid-feedback">
+                <div *ngIf="f['phone'].errors['required']">phone is required</div>
+                <div *ngIf="f['phone'].errors['pattern']">
+                    Yêu cầu nhập đúng so dien thoai
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <button type="button" (click)="onReset()" class="btn btn-warning">
+                Reset
+            </button>
+            <button type="submit" class="btn btn-primary float-right" mat-raised-button color="warn">
+                {{actionBtn}}
+            </button>
+        </div>
+    </form>
+</div>

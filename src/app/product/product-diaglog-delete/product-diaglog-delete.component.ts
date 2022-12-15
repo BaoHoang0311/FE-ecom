@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
 import { NotificationService } from '../../notification/notification.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ApiService } from 'src/app/services/product/api.service';
 @Component({
   selector: 'app-product-diaglog-delete',
   templateUrl: './product-diaglog-delete.component.html',
@@ -24,20 +24,20 @@ export class ProductDiaglogDeleteComponent implements OnInit {
   }
 
   deleteProduct() {
-    this.api.delProduct(this.DeleteData.id).subscribe({
-      next: (res) => {
-        if (res.statusCode === 200) {
-          this.notifyService.showSuccess("Delete Product success!", "Thong bao");
-          this.diaglog.close('deleteProduct');
-        }
-        else {
+    this.api.delProduct(this.DeleteData.id)
+      .subscribe({
+        next: (res) => {
+          if (res.statusCode === 200) {
+            this.notifyService.showSuccess("Delete Product success!", "Thong bao");
+            this.diaglog.close('abcd');
+          }
+          else {
+            this.notifyService.showError("Something is wrong", "Thong bao");
+          }
+        },
+        error: () => {
           this.notifyService.showError("Something is wrong", "Thong bao");
         }
-      },
-      error: () => {
-        this.notifyService.showError("Something is wrong", "Thong bao");
-      }
-    });
-
+      });
   }
 }

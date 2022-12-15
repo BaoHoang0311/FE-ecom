@@ -23,6 +23,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { ProductDiaglogDeleteComponent } from './product/product-diaglog-delete/product-diaglog-delete.component';
 import { CustomerDiaglogDeleteComponent } from './customer/customer-diaglog-delete/customer-diaglog-delete.component';
 import { CustomerDiaglogComponent } from './customer/customer-diaglog/customer-diaglog.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +54,7 @@ import { CustomerDiaglogComponent } from './customer/customer-diaglog/customer-d
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,1 +1,49 @@
-<p>customer works!</p>
+<div class="container mt-5">
+
+    <h2 class="mb-3 text-center">Customer</h2>
+
+    <div class="demo-button-container" style="margin-top: 30px;">
+        <button mat-button (click)="openDialogAddCustomer()" mat-flat-button color="warn">
+            Add Customer
+        </button>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" (click)="sortData()">ID</th>
+                <th scope="col">FullName</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="
+            let cus of Customers
+              | paginate
+                : {
+                    itemsPerPage: 3,
+                    currentPage: pagination,
+                    totalItems: allCustomers
+                  }
+          ">
+                <td scope="row">{{ cus.id }}</td>
+                <td>{{ cus.fullName }}</td>
+                <td>{{ cus.email }}</td>
+                <td>{{ cus.phone }}</td>
+                <td>
+                    <button mat-icon-button color="primary" (click)="editCustomer(cus)">
+                        <mat-icon>edit </mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="openDialogDelProduct(cus)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+        <pagination-controls (pageChange)="renderPage($event)"></pagination-controls>
+    </div>
+</div>

@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { NotificationService } from '../../notification/notification.service';
-import { ApiService } from '../../services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ApiService } from 'src/app/services/product/api.service';
 
 @Component({
   selector: 'app-product-dialog',
@@ -28,7 +28,6 @@ export class ProductDialogComponent implements OnInit {
     private diaglog: MatDialogRef<ProductDialogComponent>,
 
     @Inject(MAT_DIALOG_DATA) public editData: any,
-    @Inject(MAT_DIALOG_DATA) public deleteData: any
 
   ) { }
 
@@ -64,7 +63,6 @@ export class ProductDialogComponent implements OnInit {
           ],
         });
     }
-
   }
 
   get f(): { [key: string]: AbstractControl } {
