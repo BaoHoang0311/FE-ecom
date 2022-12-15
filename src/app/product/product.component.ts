@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductDialogComponent } from '../product-dialog/product-dialog.component';
+import { ProductDialogComponent } from './product-dialog/product-dialog.component';
 import { ApiService } from '../services/api.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ProductDiaglogDeleteComponent } from '../product-diaglog-delete/product-diaglog-delete.component';
+import { ProductDiaglogDeleteComponent } from './product-diaglog-delete/product-diaglog-delete.component';
 
 @Component({
   selector: 'app-product',
@@ -21,9 +21,7 @@ export class ProductComponent implements OnInit {
   @ViewChild(MatSort) sort !: MatSort;
 
   constructor(private dialog: MatDialog,
-
     private api: ApiService) {
-
   }
 
   ngOnInit(): void {
@@ -31,17 +29,22 @@ export class ProductComponent implements OnInit {
   }
 
   openDialog() {
-    this.dialog.open(ProductDialogComponent, { width: '30%', height: '30%', })
+    this.dialog.open(ProductDialogComponent, { width: '30%', height: '50%', })
       .afterClosed().subscribe(val => {
-        if (val == 'save') {
+        if (val == 'saveProduct') {
           this.getAllProducts();
         }
       });
   }
 
-  openDialog1(): void {
+  openDialogDelProduct(row: any) {
     this.dialog.open(ProductDiaglogDeleteComponent, {
       width: '250px',
+      data: row
+    }).afterClosed().subscribe(val => {
+      if (val == 'deleteProduct') {
+        this.getAllProducts();
+      }
     });
   }
 
@@ -57,26 +60,16 @@ export class ProductComponent implements OnInit {
         error: (err) => { console.log(err); }
       });
   }
+
   editProduct(row: any) {
     this.dialog.open(ProductDialogComponent, {
-      width: '30%',
-      data: row,
+      width: '50%',
+      data: row
     }).afterClosed().subscribe(val => {
-      if (val == 'update') {
+      if (val == 'updateProduct') {
         this.getAllProducts();
       }
-    });;
-  }
-
-  deleteProduct(row: any) {
-    this.dialog.open(ProductDialogComponent, {
-      width: '30%',
-      data: row,
-    }).afterClosed().subscribe(val => {
-      if (val == 'update') {
-        this.getAllProducts();
-      }
-    });;
+    });
   }
 
   applyFilter(event: Event) {
@@ -87,6 +80,4 @@ export class ProductComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
-
 }

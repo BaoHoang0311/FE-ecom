@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { NotificationService } from '../notification/notification.service';
-import { ApiService } from '../services/api.service';
+import { NotificationService } from '../../notification/notification.service';
+import { ApiService } from '../../services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-product-dialog',
   templateUrl: './product-dialog.component.html',
@@ -20,7 +21,8 @@ export class ProductDialogComponent implements OnInit {
   actionBtn = "Add";
   headerForm = "Add Product";
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private api: ApiService,
     private notifyService: NotificationService,
     private diaglog: MatDialogRef<ProductDialogComponent>,
@@ -62,19 +64,8 @@ export class ProductDialogComponent implements OnInit {
           ],
         });
     }
-    if (this.deleteData) {
-      this.actionBtn = "Delete";
-      this.headerForm = "Delete Product"
-      this.productForm = this.formBuilder.group(
-        {
-          id: this.deleteData.id,
-          fullName: this.deleteData.fullName,
-          amount: this.deleteData.amount,
-        });
-    }
 
   }
-
 
   get f(): { [key: string]: AbstractControl } {
     return this.productForm.controls;
@@ -94,7 +85,7 @@ export class ProductDialogComponent implements OnInit {
             if (res.statusCode === 200) {
               this.notifyService.showSuccess("Add Product success!", "Thong bao");
               this.productForm.reset();
-              this.diaglog.close('save');
+              this.diaglog.close('saveProduct');
             }
             else {
               this.notifyService.showError("Something is wrong", "Thong bao")
@@ -118,19 +109,17 @@ export class ProductDialogComponent implements OnInit {
           if (res.statusCode === 200) {
             this.notifyService.showSuccess("Update Product success!", "Thong bao");
             this.productForm.reset();
-            this.diaglog.close('update');
+            this.diaglog.close('updateProduct');
           }
           else {
-            this.notifyService.showError("Something is wrong", "Thong bao")
+            this.notifyService.showError("Something is wrong", "Thong bao");
           }
         },
         error: () => {
-          this.notifyService.showError("Something is wrong", "Thong bao")
+          this.notifyService.showError("Something is wrong", "Thong bao");
         }
       });
   }
-
-
 
   onReset(): void {
     this.submitted = false;

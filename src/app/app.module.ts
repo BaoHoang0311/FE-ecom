@@ -10,7 +10,7 @@ import { ProductComponent } from './product/product.component';
 import { CustomerComponent } from './customer/customer.component';
 import { BuyorderComponent } from './buyorder/buyorder.component';
 import { OrderComponent } from './order/order.component';
-import { ProductDialogComponent } from './product-dialog/product-dialog.component';
+import { ProductDialogComponent } from './product/product-dialog/product-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,7 +20,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { ProductDiaglogDeleteComponent } from './product-diaglog-delete/product-diaglog-delete.component';
+import { ProductDiaglogDeleteComponent } from './product/product-diaglog-delete/product-diaglog-delete.component';
+import { CustomerDiaglogDeleteComponent } from './customer/customer-diaglog-delete/customer-diaglog-delete.component';
+import { CustomerDiaglogComponent } from './customer/customer-diaglog/customer-diaglog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +32,8 @@ import { ProductDiaglogDeleteComponent } from './product-diaglog-delete/product-
     OrderComponent,
     ProductDialogComponent,
     ProductDiaglogDeleteComponent,
+    CustomerDiaglogDeleteComponent,
+    CustomerDiaglogComponent,
   ],
   imports: [
     BrowserModule,
