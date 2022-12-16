@@ -10,6 +10,8 @@ export class CustomerServiceService {
 
   url = 'https://localhost:44381/api/';
 
+  // https://localhost:44381/api/Customers
+
   postCustomer(data: any) {
     return this.http.post<any>(this.url + 'Customers', data);
   }
@@ -23,7 +25,7 @@ export class CustomerServiceService {
   }
 
   delCustomer(id: any) {
-    return this.http.delete<any>(this.url + `Customers/?id=${id}`);
+    return this.http.delete<any>(this.url + `Customers?id=${id}`);
   }
 
 }

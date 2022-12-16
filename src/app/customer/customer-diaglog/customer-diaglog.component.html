@@ -37,6 +37,18 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label>address</label>
+            <input type="text" formControlName="address" class="form-control"
+                [ngClass]="{'is-invalid': submitted && f['fullName'].errors }" />
+            <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
+                <div *ngIf="f['address'].errors['required']">address is required</div>
+                <div *ngIf="f['address'].errors['minlength']">
+                    Ký tự phải lớn hơn 3
+                </div>
+            </div>
+        </div>
+
 
         <div class="form-group">
             <button type="button" (click)="onReset()" class="btn btn-warning">

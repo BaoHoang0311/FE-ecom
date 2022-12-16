@@ -1,1 +1,9 @@
-<p>customer-diaglog-delete works!</p>
+<h1 mat-dialog-title>Delete Customer</h1>
+<div mat-dialog-content>
+    Would you like to delete customer {{name}}
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button cdkFocusInitial class="btn btn-primary" mat-raised-button color="warn"
+        (click)="deleteCustomer()">Yes</button>
+</div>

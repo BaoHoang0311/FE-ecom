@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { CustomerDiaglogComponent } from './customer-diaglog/customer-diaglog.component';
+import { CustomerDiaglogDeleteComponent } from './customer-diaglog-delete/customer-diaglog-delete.component';
 
 @Component({
    selector: 'app-customer',
@@ -32,8 +33,23 @@ export class CustomerComponent implements OnInit {
       this.GetCustomers();
    }
 
-   editCustomer(student: any) {
+   openDialogAddCustomer() {
+      this.diaglog.open(CustomerDiaglogComponent, { width: '30%', height: '60%', })
+         .afterClosed().subscribe(val => {
+            if (val == 'saveCustomer') {
+               this.GetCustomers();
+            }
+         });
+   };
+
+   editDiaglogCustomer(student: any) {
       console.log(student);
+      this.diaglog.open(CustomerDiaglogComponent, { width: '30%', height: '60%', data: student })
+         .afterClosed().subscribe(val => {
+            if (val == 'updateCustomer') {
+               this.GetCustomers();
+            }
+         });
    };
 
    GetCustomers() {
@@ -48,17 +64,15 @@ export class CustomerComponent implements OnInit {
       console.log(event);
       this.GetCustomers();
    }
-   openDialogAddCustomer() {
-      this.diaglog.open(CustomerDiaglogComponent, { width: '30%', height: '50%', })
+   
+   openDialogDelProduct(student: any) {
+      console.log(student);
+      this.diaglog.open(CustomerDiaglogDeleteComponent, { width: '30%', height: '60%', data: student })
          .afterClosed().subscribe(val => {
-            if (val == 'saveCustomer') {
+            if (val == 'DelCustomer') {
                this.GetCustomers();
             }
          });
-   };
-
-   openDialogDelProduct(row: any) {
-
    };
 
    sortData() {
@@ -82,7 +96,6 @@ export class CustomerComponent implements OnInit {
             console.log(res.data);
          });
       }
-
    }
 
 }

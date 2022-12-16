@@ -22,6 +22,6 @@ export class ApiService {
   }
 
   delProduct(id: any) {
-    return this.http.delete<any>(this.url + `Products/?id=${id}`);
+    return this.http.delete<any>(this.url + `Products?id=${id}`);
   }
 }
