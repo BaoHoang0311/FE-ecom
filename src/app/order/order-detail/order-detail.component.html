@@ -1,0 +1,91 @@
+<div class="container">
+    <h1 style="text-align: center;">Add Order</h1>
+
+    <form autocomplete="off">
+        <input type="hidden" name="OrderID">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label>Order No.</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">#</div>
+                        </div>
+                        <input name="OrderNo" class="form-control">
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <label>Customer</label>
+                    <select name="CustomerID" class="form-control" required>
+                        <option value="">Yêu cầu chọn</option>
+                        <!-- <option value="0">-Select-</option>
+                        <option value="1">3</option> -->
+                        <option *ngFor="let item of listCustomer" value="{{item.id}}">{{item.fullName}}</option>
+                    </select>
+                </div>
+
+                <!-- <div class="form-group">
+                    <label>Payment Method</label>
+                    <select name="PMethod" class="form-control">
+                        <option value="">-Select-</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Card">Card</option>
+                    </select>
+                </div> -->
+
+                <div class="form-group">
+                    <label>Grand Total</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        <input name="GTotal" class="form-control" readonly>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- order items table-->
+        <table class="table table-borderless">
+            <thead class="thead-light">
+                <th>Id</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>
+                    <a class="btn btn-sm btn-success text-white"><i class="fa fa-plus"></i> Add Item</a>
+                </th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-italic text-center" colspan="5">
+                        No food item selected for this order.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>
+                        <a class="btn btn-sm btn-info text-white"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-sm btn-danger text-white ml-1"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-dark"><i class="fa fa-database"></i> Submit</button>
+            <a class="btn btn-outline-dark ml-1" routerLink="/orders"><i class="fa fa-table"></i> View Orders</a>
+        </div>
+    </form>
+</div>

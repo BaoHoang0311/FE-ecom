@@ -6,6 +6,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductDiaglogDeleteComponent } from './product-diaglog-delete/product-diaglog-delete.component';
+import { map, startWith } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -20,13 +23,29 @@ export class ProductComponent implements OnInit {
   @ViewChild(MatPaginator) paginator !: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
 
+  myControl = new FormControl('');
+  options: string[] = [];
+  filteredOptions !: Observable<string[]>;
+
   constructor(
     private dialog: MatDialog,
-    private api: ApiService) {
-  }
+    private api: ApiService
+  ) { }
 
   ngOnInit(): void {
+
     this.getAllProducts();
+    console.log(this.options);
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   openDialog() {
@@ -66,7 +85,11 @@ export class ProductComponent implements OnInit {
           this.dataSource = new MatTableDataSource(res.data);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
-          console.log(this.dataSource);
+          for (let i = 0; i < res.data.length; i++) {
+            this.options.push(`${res.data[i].fullName}`);
+
+          }
+          console.log("options asd", this.options);
         },
         error: (err) => { console.log(err); }
       });

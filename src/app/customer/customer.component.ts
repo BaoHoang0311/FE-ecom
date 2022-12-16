@@ -3,8 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CustomerServiceService } from '../services/customer/customer-service.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { CustomerDiaglogComponent } from './customer-diaglog/customer-diaglog.component';
 import { CustomerDiaglogDeleteComponent } from './customer-diaglog-delete/customer-diaglog-delete.component';
 
@@ -22,7 +20,6 @@ export class CustomerComponent implements OnInit {
 
    displayedColumns: string[] = ['id', 'fullName', 'email', 'phone', 'Action'];
    dataSource !: MatTableDataSource<any>;
-   @ViewChild(MatSort) sort !: MatSort;
 
    Customers: any;
    allCustomers: number = 0;
@@ -53,7 +50,7 @@ export class CustomerComponent implements OnInit {
    };
 
    GetCustomers() {
-      this.apiCus.getAllCustomer(this.sortBy, this.pagination, 3).subscribe((res: any) => {
+      this.apiCus.getAllCustomerPaging(this.sortBy, this.pagination, 3).subscribe((res: any) => {
          console.log("id chua click:  " + this.sortBy)
          this.Customers = res.data;
          this.allCustomers = res.total;
@@ -64,7 +61,7 @@ export class CustomerComponent implements OnInit {
       console.log(event);
       this.GetCustomers();
    }
-   
+
    openDialogDelProduct(student: any) {
       console.log(student);
       this.diaglog.open(CustomerDiaglogDeleteComponent, { width: '30%', height: '60%', data: student })
@@ -79,7 +76,7 @@ export class CustomerComponent implements OnInit {
       if (this.sortBy === "") {
          this.sortBy = "Id";
          console.log("id da click:  " + this.sortBy)
-         this.apiCus.getAllCustomer(this.sortBy, this.pagination, 3).subscribe((res: any) => {
+         this.apiCus.getAllCustomerPaging(this.sortBy, this.pagination, 3).subscribe((res: any) => {
             console.log("id da click:  " + this.sortBy)
             this.Customers = res.data;
             this.allCustomers = res.total;
@@ -89,7 +86,7 @@ export class CustomerComponent implements OnInit {
       else {
          this.sortBy = "";
          console.log("id da click:  " + this.sortBy)
-         this.apiCus.getAllCustomer(this.sortBy, this.pagination, 3).subscribe((res: any) => {
+         this.apiCus.getAllCustomerPaging(this.sortBy, this.pagination, 3).subscribe((res: any) => {
             console.log("id da click:  " + this.sortBy)
             this.Customers = res.data;
             this.allCustomers = res.total;

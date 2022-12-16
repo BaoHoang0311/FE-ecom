@@ -24,7 +24,9 @@ import { ProductDiaglogDeleteComponent } from './product/product-diaglog-delete/
 import { CustomerDiaglogDeleteComponent } from './customer/customer-diaglog-delete/customer-diaglog-delete.component';
 import { CustomerDiaglogComponent } from './customer/customer-diaglog/customer-diaglog.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { OrderDetailComponent } from './order/order-detail/order-detail.component';
+import { BuyorderDetailComponent } from './buyorder/buyorder-detail/buyorder-detail.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +38,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ProductDiaglogDeleteComponent,
     CustomerDiaglogDeleteComponent,
     CustomerDiaglogComponent,
+    OrderDetailComponent,
+    BuyorderDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +58,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]
