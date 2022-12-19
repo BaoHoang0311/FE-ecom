@@ -7,7 +7,7 @@ import { OrderService } from 'src/app/services/order/order.service';
 import { OrderDetailProductComponent } from './order-detail-product/order-detail-product.component';
 import { OrderItem } from 'src/app/services/model/order-item.model';
 import { NotificationService } from 'src/app/notification/notification.service';
-import { Router } from "@angular/router"
+import { ActivatedRoute, Router } from "@angular/router"
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
@@ -21,21 +21,22 @@ export class OrderDetailComponent implements OnInit {
     public apiOrder: OrderService,
     private diaglog: MatDialog,
     private notifyService: NotificationService,
-    private router: Router
+    private currentRoute: ActivatedRoute,
+    private router: Router,
+
   ) { }
 
   listCustomer: any = [];
 
   submitted = false;
 
-  selectedOccupations: any = [];
+  // selectedOccupations: any = [];
 
   OrderForm: FormGroup = new FormGroup({
     orderId: new FormControl(''),
     orderNo: new FormControl(''),
     customerId: new FormControl(''),
     totalPrice: new FormControl(''),
-
   });
 
   orderDetailDtos: any = OrderItem;
@@ -43,13 +44,38 @@ export class OrderDetailComponent implements OnInit {
   ngOnInit(): void {
 
     this.getAllCustomers();
-    // this.apiOrder.orderItems;
     this.OrderForm = this.formBuilder.group(
       {
         orderNo: ['', [Validators.required, Validators.minLength(3)]],
         customerId: ['', Validators.required],
         totalPrice: ['', Validators.required],
       });
+
+    let orderID = this.currentRoute.snapshot.paramMap.get('id');
+    // console.log(`orderId`, orderID);
+    if (orderID != null) {
+      this.apiOrder.getOrderbyId(parseInt(orderID)).subscribe(
+        {
+          next: (res) => {
+
+            console.log(res.data);
+            this.OrderForm = this.formBuilder.group(
+              {
+                id: res.data[0].id,
+                orderNo: res.data[0].orderNo,
+                customerId: res.data[0].customerId,
+                totalPrice: res.data[0].totalPrice,
+              });
+            this.apiOrder.orderItems = res.data[0].orderDetails;
+
+            console.log(this.apiOrder.orderItems);
+
+          },
+          error: (err) => { console.log(err); }
+        });
+
+    };
+
   };
 
   // dropdown danh sách khách hàng
@@ -70,6 +96,7 @@ export class OrderDetailComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+
     if (this.OrderForm.invalid) {
       console.log('bisai', this.OrderForm);
       return;
@@ -102,33 +129,28 @@ export class OrderDetailComponent implements OnInit {
           this.notifyService.showError("Something is wrong", "Thong bao")
         }
       })
-    // console.log('ok ', this.OrderForm.value);
   }
-
-
-
-
 
   get f(): { [key: string]: AbstractControl } {
     return this.OrderForm.controls;
   }
 
 
-  openDialogProductDetail() {
+  openDialogAddProductDetail() {
 
     this.diaglog.open(OrderDetailProductComponent,
       {
         width: '30%',
         height: '60%',
-        data: { zzz: this.selectedOccupations }
       }
     ).afterClosed().subscribe(val => {
-      console.log('a', this.apiOrder.orderItems);
+      // console.log('a', this.apiOrder.orderItems);
 
       // console.log(this.apiOrder.orderItems);
 
-      this.selectedOccupations.push(this.apiOrder.orderItems[this.apiOrder.orderItems.length - 1].productId);
-      console.log(this.selectedOccupations);
+      // this.selectedOccupations.push(this.apiOrder.orderItems[this.apiOrder.orderItems.length - 1].productId);
+      // console.log(this.selectedOccupations);
+
       this.updateGrandTotal();
     });
   }
@@ -139,7 +161,24 @@ export class OrderDetailComponent implements OnInit {
     }, 0);
     let gt = parseFloat(Sum_orderDetail);
     this.OrderForm.controls['totalPrice'].setValue(gt);
-    console.log(Sum_orderDetail);
   }
 
+  onDeleteOrderDetail(index: any) {
+    this.apiOrder.orderItems.splice(index, 1);
+    this.updateGrandTotal();
+  }
+
+  onEditOrderDetail(index: any, item: any) {
+    console.log(`onEditOrderDetail`, item);
+    console.log(`dsda`, index);
+    this.diaglog.open(OrderDetailProductComponent,
+      {
+        width: '30%',
+        height: '60%',
+        data: { i: index, items: item }
+      }
+    ).afterClosed().subscribe(val => {
+      this.updateGrandTotal();
+    });
+  }
 }

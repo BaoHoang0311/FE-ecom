@@ -23,7 +23,8 @@ export class OrderDetailProductComponent implements OnInit {
     private diaglog: MatDialogRef<OrderDetailProductComponent>,
     private apiOrder: OrderService,
 
-    @Inject(MAT_DIALOG_DATA) public abc: any,
+    @Inject(MAT_DIALOG_DATA) public editOrderProductDetailData: any,
+
   ) { }
 
   dataSource !: MatTableDataSource<any>;
@@ -32,6 +33,9 @@ export class OrderDetailProductComponent implements OnInit {
   amount: any;
 
   submitted = false;
+
+  actionBtn = "Add";
+  headerForm = "Add";
 
   OrderDetailProductForm: FormGroup = new FormGroup({
     productId: new FormControl(''),
@@ -53,9 +57,21 @@ export class OrderDetailProductComponent implements OnInit {
         price: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
         totalPrice: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
       });
-    console.log(`check`, this.abc.zzz.includes('1'));
 
 
+    if (this.editOrderProductDetailData) {
+      this.actionBtn = "Update";
+      this.headerForm = "Update Order"
+      this.OrderDetailProductForm = this.formBuilder.group(
+        {
+          id: this.editOrderProductDetailData.items.id,
+          productId: [this.editOrderProductDetailData.items.productId, [Validators.required, Validators.minLength(3)]],
+          productAmmount: [this.editOrderProductDetailData.items.productAmmount, [Validators.required, Validators.email]],
+          price: [this.editOrderProductDetailData.items.price, [Validators.required, Validators.min(1), Validators.max(500)]],
+          totalPrice: [this.editOrderProductDetailData.items.totalPrice],
+        });
+      this.OrderDetailProductForm.controls['totalPrice'].setValue(this.editOrderProductDetailData.items.totalPrice);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -78,7 +94,6 @@ export class OrderDetailProductComponent implements OnInit {
               productAmount: elem.amount,
             }
           });
-          console.log(this.listProduct);
         },
         error: (err) => { console.log(err); }
       });
@@ -99,30 +114,34 @@ export class OrderDetailProductComponent implements OnInit {
         price: [this.OrderDetailProductForm.value.price, [Validators.required, Validators.min(1), Validators.max(500)]],
         totalPrice: [this.OrderDetailProductForm.value.totalPrice, [Validators.required, Validators.min(1), Validators.max(500)]],
       });
-    // console.log(`OrderDetailProductForm`, this.OrderDetailProductForm.value);
   }
 
-  onSubmitOrderdetailProduct() {
-    this.submitted = true;
-    if (this.OrderDetailProductForm.invalid) {
-      console.log('ssasas', this.OrderDetailProductForm);
-      console.log(this.OrderDetailProductForm.value);
-      return;
+  onSubmitOrderdetailProductinAddOrder() {
+
+    if (!this.editOrderProductDetailData) {
+      this.submitted = true;
+      if (this.OrderDetailProductForm.invalid) {
+        console.log('ssasas', this.OrderDetailProductForm);
+        console.log(this.OrderDetailProductForm.value);
+        return;
+      }
+      this.apiOrder.orderItems.push(this.OrderDetailProductForm.value);
+      this.diaglog.close('addOrderDetai');
     }
-    // console.log(`ok ok`, this.OrderDetailProductForm.value.productId);
+    else {
+      console.log(`edit here`, this.OrderDetailProductForm.value);
+      console.log(`777777`, this.editOrderProductDetailData)
 
-    this.apiOrder.orderItems.push(this.OrderDetailProductForm.value);
-    // console.log(this.apiOrder.orderItems);
-
-
-    this.diaglog.close('addOrderDetai');
+      this.apiOrder.orderItems[this.editOrderProductDetailData.i] = this.OrderDetailProductForm.value;
+      console.log(`888888`, this.apiOrder.orderItems);
+      this.diaglog.close('editOrderDetai');
+    }
   }
 
   // tính totalPrice từng product
   updateTotal() {
     let tongtien = parseFloat((this.OrderDetailProductForm.value.price * this.OrderDetailProductForm.value.productAmmount).toFixed(2));
     this.OrderDetailProductForm.controls['totalPrice'].setValue(tongtien);
-    // console.log("tongtien", tt);
   }
 
 }

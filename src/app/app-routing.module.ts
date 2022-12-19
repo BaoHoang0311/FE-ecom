@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: 'Order', children: [
       { path: 'add', component: OrderDetailComponent },
-      // { path: 'edit/:id', component: OrderDetailComponent }
+      { path: 'edit/:id', component: OrderDetailComponent }
     ]
   },
 

@@ -1,7 +1,7 @@
-<h2 class="dispaly-4">Order Item</h2>
+<h2 class="dispaly-4">{{this.headerForm}} Order Item</h2>
 <hr>
 <div class="register-form">
-    <form [formGroup]="OrderDetailProductForm" autocomplete="off" (ngSubmit)="onSubmitOrderdetailProduct()">
+    <form [formGroup]="OrderDetailProductForm" autocomplete="off" (ngSubmit)="onSubmitOrderdetailProductinAddOrder()">
         <input type="hidden" name="OrderItemID">
         <input type="hidden" name="OrderID">
         <input type="hidden" name="ItemName">
@@ -74,9 +74,9 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-dark" mat-raised-button color="warn"><i class="fa fa-database"></i>
-                Submit</button>
-            <button type="button" class="btn btn-outline-dark ml-1" [mat-dialog-close]><i class="fa fa-close"></i>
+            <button type="submit" class="btn btn-dark" mat-raised-button color="warn">
+                {{this.actionBtn}}</button>
+            <button type="button" class="btn btn-outline-dark ml-1" [mat-dialog-close]>
                 Close</button>
         </div>
     </form>

@@ -96,6 +96,7 @@ export class CustomerDiaglogComponent implements OnInit {
       this.updateCustomer();
     }
   };
+  
   updateCustomer() {
     console.log(this.customerForm.value);
     this.cusapi.putCustomer(this.customerForm.value)

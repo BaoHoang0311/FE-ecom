@@ -14,6 +14,10 @@ export class OrderService {
   constructor(private http: HttpClient) { }
   url = 'https://localhost:44381/api/';
 
+  getOrderbyId(id: any) {
+    return this.http.get<any>(this.url + `Orders/${id}`);
+  }
+
   postOrder(data: any) {
     return this.http.post<any>(this.url + 'Orders', data);
   }
@@ -28,4 +32,6 @@ export class OrderService {
   delOrder(id: any) {
     return this.http.delete<any>(this.url + `Orders?id=${id}`);
   }
+
+
 }

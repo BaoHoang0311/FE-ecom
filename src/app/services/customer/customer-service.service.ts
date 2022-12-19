@@ -10,11 +10,8 @@ export class CustomerServiceService {
 
   url = 'https://localhost:44381/api/';
 
-  // https://localhost:44381/api/Customers
 
-  postCustomer(data: any) {
-    return this.http.post<any>(this.url + 'Customers', data);
-  }
+
   //https://localhost:44381/api/Products?pageNumber=1&pageSize=100
   getAllCustomerPaging(sortBy: any, pageNumber: any, pageSize: number) {
     return this.http.get<any>(this.url + `Customers?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}`);
@@ -26,6 +23,10 @@ export class CustomerServiceService {
 
   putCustomer(data: any) {
     return this.http.put<any>(this.url + 'Customers', data);
+  }
+
+  postCustomer(data: any) {
+    return this.http.post<any>(this.url + 'Customers', data);
   }
 
   delCustomer(id: any) {

@@ -1,5 +1,5 @@
 <div class="container">
-    <h1 style="text-align: center;">Add Order</h1>
+    <h1 style="text-align: center;">Add Update Order</h1>
 
     <form [formGroup]="OrderForm" (ngSubmit)="onSubmit()">
         <!-- <input type="hidden" name="OrderID"> -->
@@ -62,7 +62,7 @@
                 <th>Total</th>
                 <th>Action</th>
                 <th>
-                    <a class="btn btn-sm btn-success text-white" (click)="openDialogProductDetail()"><i
+                    <a class="btn btn-sm btn-success text-white" (click)="openDialogAddProductDetail()"><i
                             class="fa fa-plus"></i> Add
                         Item</a>
                 </th>
@@ -75,27 +75,18 @@
                 </tr>
 
                 <tr *ngFor="let item of apiOrder.orderItems;let i=index;">
-                    <td>{{item.id}}</td>
+                    <td>{{i+1}}</td>
                     <td>{{item.productName}}</td>
-                    <td>{{item.productAmmount}}</td>
+                    <td>{{item.ammount}}</td>
                     <td>{{item.price}}</td>
                     <td>{{item.totalPrice}}</td>
                     <td>
-                        <!-- <a class="btn btn-sm btn-info text-white" (click)="AddOrEditOrderItem(i,service.formData.OrderID)"><i
-                          class="fa fa-pencil"></i></a>
-                      <a class="btn btn-sm btn-danger text-white ml-1" (click)="onDeleteOrderItem(item.OrderItemID,i)"><i
-                          class="fa fa-trash"></i></a> -->
-
-                        <!-- <a class="btn btn-sm btn-info text-white"><i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-sm btn-danger text-white ml-1"><i class="fa fa-trash"></i></a> -->
-
-                        <button mat-icon-button color="primary">
-                            <mat-icon>edit </mat-icon>
-                        </button>
-                        <button mat-icon-button color="warn">
+                        <a mat-icon-button color="primary" (click)="onEditOrderDetail(i,item)">
+                            <mat-icon> edit </mat-icon>
+                        </a>
+                        <a mat-icon-button color="warn" (click)="onDeleteOrderDetail(i)">
                             <mat-icon>delete </mat-icon>
-                        </button>
-
+                        </a>
                     </td>
                 </tr>
             </tbody>
@@ -104,7 +95,7 @@
         <div class="form-group">
             <button type="submit" class="btn btn-dark" mat-raised-button color="warn"><i class="fa fa-database"></i>
                 Submit</button>
-            <a class="btn btn-outline-dark ml-1" routerLink="/orders"><i class="fa fa-table"></i> View Orders</a>
+            <a class="btn btn-outline-dark ml-1" routerLink="/Order"><i class="fa fa-table"></i> View Orders</a>
         </div>
     </form>
 </div>

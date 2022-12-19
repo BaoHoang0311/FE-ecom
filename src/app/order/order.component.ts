@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { OrderDetailProductComponent } from './order-detail/order-detail-product/order-detail-product.component';
 import { OrderDiaglogDeleteComponent } from './order-diaglog-delete/order-diaglog-delete.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 @Component({
   selector: 'app-order',
@@ -21,11 +22,10 @@ export class OrderComponent implements OnInit {
   @ViewChild(MatPaginator) paginator !: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
 
-
-
   constructor(
     private dialog: MatDialog,
     private orderApi: OrderService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -47,9 +47,13 @@ export class OrderComponent implements OnInit {
   }
 
 
-  editOrder(row: any) {
-    console.log(row);
+  openForEdit(row: any) {
+    console.log('editzzzzzzzzzzzzzzzzzzz', row);
+    this.router.navigate(['/Order/edit/' + row.id]);
+    // lấy cái roid làm việc
+
   }
+
 
   openDialogDelOrder(row: any) {
     console.log(row);

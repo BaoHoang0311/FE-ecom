@@ -3,7 +3,7 @@
 export class OrderItem {
     id!: number;
     productId!: number;
-    productAmmount!: number;
+    ammount!: number;
     price!: number;
     totalPrice!: string;
 }
