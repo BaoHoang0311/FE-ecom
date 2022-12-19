@@ -1,0 +1,83 @@
+<h2 class="dispaly-4">Order Item</h2>
+<hr>
+<div class="register-form">
+    <form [formGroup]="OrderDetailProductForm" autocomplete="off" (ngSubmit)="onSubmitOrderdetailProduct()">
+        <input type="hidden" name="OrderItemID">
+        <input type="hidden" name="OrderID">
+        <input type="hidden" name="ItemName">
+        <div class="form-group">
+
+            <!-- [disabled]="item.productId == '01' " -->
+
+            <label>Product Item</label>
+            <select formControlName="productId" class="form-control" required
+                [ngClass]="{'is-invalid': submitted && f['productId'].errors }" (ngModelChange)="onChange($event)">
+
+                <option value="">Yêu cầu chọn</option>
+                <option *ngFor="let item of listProduct; let i= index" value="{{item.productId}}">
+
+                    {{item.productName}}-{{item.productAmount}}-{{i}}
+                </option>
+
+                <div *ngIf="submitted && f['productId'].errors" class="invalid-feedback">
+                    <div *ngIf="f['productId'].errors['required']">product is required</div>
+                </div>
+            </select>
+        </div>
+
+        <div *ngFor="let item of amount | keyvalue ; let i =index">
+            <p *ngIf="i==0">Số lượng trong kho: {{item.value}}</p>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Price</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">$</div>
+                    </div>
+                    <input type="number" formControlName="price" class="form-control"
+                        oninput="this.value = Math.abs(this.value)" min="1"
+                        [ngClass]="{'is-invalid': submitted && f['price'].errors }" (ngModelChange)="updateTotal()">
+                    <div *ngIf="submitted && f['price'].errors" class="invalid-feedback">
+                        <div *ngIf="f['price'].errors['required']">Price is required</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class=" form-group col-md-6">
+                <label>Quantity</label>
+                <!-- max="{{this.gtln}}" -->
+                <input type="number" formControlName="productAmmount" class="form-control"
+                    oninput="this.value = Math.abs(this.value)" min="1"
+                    [ngClass]="{ 'is-invalid': submitted && f['productAmmount'].errors }"
+                    (ngModelChange)="updateTotal()" />
+                <div *ngIf="submitted && f['productAmmount'].errors" class="invalid-feedback">
+                    <div *ngIf="f['productAmmount'].errors['required']">Ammount is required</div>
+                    <div *ngIf="f['productAmmount'].errors['min']">
+                        nhap dung so luong
+                    </div>
+                    <div *ngIf="f['productAmmount'].errors['max']">
+                        nhap dung so luong trong kho
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Total</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">$</div>
+                </div>
+                <input type="number" formControlName="totalPrice" class="form-control" readonly>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-dark" mat-raised-button color="warn"><i class="fa fa-database"></i>
+                Submit</button>
+            <button type="button" class="btn btn-outline-dark ml-1" [mat-dialog-close]><i class="fa fa-close"></i>
+                Close</button>
+        </div>
+    </form>
+</div>

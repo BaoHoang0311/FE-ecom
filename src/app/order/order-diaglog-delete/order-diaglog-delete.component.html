@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Delete Order</h1>
+<div mat-dialog-content>
+    Would you like to delete Order {{name}}
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button cdkFocusInitial class="btn btn-primary" mat-raised-button color="warn" (click)="deleteOrder()">Yes</button>
+</div>

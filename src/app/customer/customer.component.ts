@@ -39,9 +39,9 @@ export class CustomerComponent implements OnInit {
          });
    };
 
-   editDiaglogCustomer(student: any) {
-      console.log(student);
-      this.diaglog.open(CustomerDiaglogComponent, { width: '30%', height: '60%', data: student })
+   editDiaglogCustomer(Customer: any) {
+      console.log(Customer);
+      this.diaglog.open(CustomerDiaglogComponent, { width: '30%', height: '60%', data: Customer })
          .afterClosed().subscribe(val => {
             if (val == 'updateCustomer') {
                this.GetCustomers();

@@ -5,6 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { OrderDetailProductComponent } from './order-detail/order-detail-product/order-detail-product.component';
+import { OrderDiaglogDeleteComponent } from './order-diaglog-delete/order-diaglog-delete.component';
 
 @Component({
   selector: 'app-order',
@@ -19,9 +21,11 @@ export class OrderComponent implements OnInit {
   @ViewChild(MatPaginator) paginator !: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
 
+
+
   constructor(
     private dialog: MatDialog,
-    private orderApi: OrderService
+    private orderApi: OrderService,
   ) { }
 
   ngOnInit(): void {
@@ -42,22 +46,18 @@ export class OrderComponent implements OnInit {
       });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-  openDialog() {
-
-  }
   editOrder(row: any) {
     console.log(row);
   }
 
   openDialogDelOrder(row: any) {
-
+    console.log(row);
+    this.dialog.open(OrderDiaglogDeleteComponent, { width: '300px', data: row })
+      .afterClosed().subscribe(val => {
+        if (val == 'abcd') {
+          this.getAllOrder();
+        }
+      });
   }
 }

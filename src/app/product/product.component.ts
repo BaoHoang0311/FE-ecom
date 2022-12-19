@@ -15,6 +15,9 @@ import { Observable } from 'rxjs';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
+
+
+
 export class ProductComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'fullName', 'amount', 'Action'];
@@ -27,6 +30,7 @@ export class ProductComponent implements OnInit {
   options: string[] = [];
   filteredOptions !: Observable<string[]>;
 
+
   constructor(
     private dialog: MatDialog,
     private api: ApiService
@@ -35,11 +39,11 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
 
     this.getAllProducts();
-    console.log(this.options);
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''),
       map(value => this._filter(value || '')),
     );
+
   }
 
   private _filter(value: string): string[] {
@@ -85,11 +89,14 @@ export class ProductComponent implements OnInit {
           this.dataSource = new MatTableDataSource(res.data);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
-          for (let i = 0; i < res.data.length; i++) {
-            this.options.push(`${res.data[i].fullName}`);
 
+          for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i].amount > 0) {
+              this.options.push(`${res.data[i].fullName}`);
+            }
           }
-          console.log("options asd", this.options);
+          console.log(res.data);
+
         },
         error: (err) => { console.log(err); }
       });
@@ -98,9 +105,15 @@ export class ProductComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    // filter name
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      return data.fullName.toLowerCase().includes(filter);
+    };
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
+
+
 }

@@ -27,6 +27,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { OrderDetailComponent } from './order/order-detail/order-detail.component';
 import { BuyorderDetailComponent } from './buyorder/buyorder-detail/buyorder-detail.component';
+import { OrderDetailProductComponent } from './order/order-detail/order-detail-product/order-detail-product.component';
+import { OrderDiaglogDeleteComponent } from './order/order-diaglog-delete/order-diaglog-delete.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +42,8 @@ import { BuyorderDetailComponent } from './buyorder/buyorder-detail/buyorder-det
     CustomerDiaglogComponent,
     OrderDetailComponent,
     BuyorderDetailComponent,
+    OrderDetailProductComponent,
+    OrderDiaglogDeleteComponent,
   ],
   imports: [
     BrowserModule,

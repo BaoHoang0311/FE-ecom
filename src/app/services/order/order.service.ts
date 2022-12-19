@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { OrderItem } from '../model/order-item.model';
+import { Order } from '../model/order.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
+
+  order!: Order;
+  orderItems: any = [];
 
   constructor(private http: HttpClient) { }
   url = 'https://localhost:44381/api/';
@@ -12,7 +17,6 @@ export class OrderService {
   postOrder(data: any) {
     return this.http.post<any>(this.url + 'Orders', data);
   }
-  //https://localhost:44381/api/Products?pageNumber=1&pageSize=100
   getOrder() {
     return this.http.get<any>(this.url + 'Orders?pageNumber=1&pageSize=20');
   }

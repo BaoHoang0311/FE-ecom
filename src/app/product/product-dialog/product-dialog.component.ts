@@ -36,14 +36,7 @@ export class ProductDialogComponent implements OnInit {
       {
         id: 0,
         fullName: ['', [Validators.required, Validators.minLength(3)]],
-        amount: [
-          '',
-          [
-            Validators.required,
-            Validators.min(1),
-            Validators.max(500),
-          ],
-        ],
+        amount: ['', [Validators.required, Validators.min(1), Validators.max(500),]],
       });
 
     if (this.editData) {
@@ -53,14 +46,7 @@ export class ProductDialogComponent implements OnInit {
         {
           id: this.editData.id,
           fullName: [this.editData.fullName, [Validators.required, Validators.minLength(3)]],
-          amount: [
-            this.editData.amount,
-            [
-              Validators.required,
-              Validators.min(1),
-              Validators.max(500),
-            ],
-          ],
+          amount: [this.editData.amount, [Validators.required, Validators.min(1), Validators.max(500),]],
         });
     }
   }

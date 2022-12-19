@@ -1,8 +1,6 @@
 export class Order {
-    OrderID!: number;
-    OrderNo!: string;
-    CustomerID!: number;
-    PMethod!: string;
-    GTotal!: number;
-    DeletedOrderItemIDs!: string;
+    orderId!: number;
+    orderNo!: string;
+    customerId!: number;
+    totalPrice!: string;
 }

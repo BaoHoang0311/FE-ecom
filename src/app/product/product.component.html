@@ -6,14 +6,14 @@
     </button>
   </div>
 
-  <mat-form-field>
+  <!-- <mat-form-field>
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Filter" #input>
-  </mat-form-field>
+  </mat-form-field> -->
 
   <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>FullName</mat-label>
-    <input type="text" placeholder="Pick one" aria-label="FullName" matInput [formControl]="myControl"
+    <mat-label>Find by Name</mat-label>
+    <input type="text" placeholder="Filter By Name Only...." aria-label="FullName" matInput [formControl]="myControl"
       [matAutocomplete]="auto" (keyup)="applyFilter($event)">
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
       <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
@@ -36,7 +36,7 @@
       </ng-container>
 
       <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
         <td mat-cell *matCellDef="let row"> {{row.amount}} </td>
       </ng-container>
 

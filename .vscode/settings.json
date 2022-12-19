@@ -6,5 +6,8 @@
     "prettier.bracketSameLine": true,
     "[html]": {
         "editor.defaultFormatter": "vscode.html-language-features"
-    }
+    },
+    "workbench.editor.enablePreview": false,
+    "editor.rename.enablePreview": false,
+    "workbench.editor.openPositioning": "last"
 }

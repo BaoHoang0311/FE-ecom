@@ -15,8 +15,8 @@ export class CustomerDiaglogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private cusapi: CustomerServiceService,
     private notifyService: NotificationService,
-    private diaglog: MatDialogRef<CustomerDiaglogComponent>,
 
+    private diaglog: MatDialogRef<CustomerDiaglogComponent>,
     @Inject(MAT_DIALOG_DATA) public editCustomerData: any,
 
   ) { }
