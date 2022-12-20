@@ -25,7 +25,7 @@
             </select>
         </div>
 
-        <div *ngFor="let item of amount | keyvalue ; let i =index">
+        <div *ngFor="let item of product | keyvalue ; let i =index">
             <p *ngIf="i==0">Số lượng trong kho: {{item.value}}</p>
         </div>
 
@@ -48,16 +48,15 @@
             <div class=" form-group col-md-6">
                 <label>Quantity</label>
                 <!-- max="{{this.gtln}}" -->
-                <input type="number" formControlName="productAmmount" class="form-control"
+                <input type="number" formControlName="ammount" class="form-control"
                     oninput="this.value = Math.abs(this.value)" min="1"
-                    [ngClass]="{ 'is-invalid': submitted && f['productAmmount'].errors }"
-                    (ngModelChange)="updateTotal()" />
-                <div *ngIf="submitted && f['productAmmount'].errors" class="invalid-feedback">
-                    <div *ngIf="f['productAmmount'].errors['required']">Ammount is required</div>
-                    <div *ngIf="f['productAmmount'].errors['min']">
+                    [ngClass]="{ 'is-invalid': submitted && f['ammount'].errors }" (ngModelChange)="updateTotal()" />
+                <div *ngIf="submitted && f['ammount'].errors" class="invalid-feedback">
+                    <div *ngIf="f['ammount'].errors['required']">Ammount is required</div>
+                    <div *ngIf="f['ammount'].errors['min']">
                         nhap dung so luong
                     </div>
-                    <div *ngIf="f['productAmmount'].errors['max']">
+                    <div *ngIf="f['ammount'].errors['max']">
                         nhap dung so luong trong kho
                     </div>
                 </div>

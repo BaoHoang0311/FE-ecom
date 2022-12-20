@@ -30,7 +30,7 @@ export class OrderDetailProductComponent implements OnInit {
   dataSource !: MatTableDataSource<any>;
 
   listProduct: any = [];
-  amount: any;
+  product: any;
 
   submitted = false;
 
@@ -39,7 +39,7 @@ export class OrderDetailProductComponent implements OnInit {
 
   OrderDetailProductForm: FormGroup = new FormGroup({
     productId: new FormControl(''),
-    productAmmount: new FormControl(''),
+    ammount: new FormControl(''),
     price: new FormControl(''),
     totalPrice: new FormControl(''),
   });
@@ -53,7 +53,7 @@ export class OrderDetailProductComponent implements OnInit {
       {
         id: 0,
         productId: ['', [Validators.required]],
-        productAmmount: ['', [Validators.required, Validators.min(1)]],
+        ammount: ['', [Validators.required, Validators.min(1)]],
         price: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
         totalPrice: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
       });
@@ -66,7 +66,7 @@ export class OrderDetailProductComponent implements OnInit {
         {
           id: this.editOrderProductDetailData.items.id,
           productId: [this.editOrderProductDetailData.items.productId, [Validators.required, Validators.minLength(3)]],
-          productAmmount: [this.editOrderProductDetailData.items.productAmmount, [Validators.required, Validators.email]],
+          ammount: [this.editOrderProductDetailData.items.ammount, [Validators.required, Validators.email]],
           price: [this.editOrderProductDetailData.items.price, [Validators.required, Validators.min(1), Validators.max(500)]],
           totalPrice: [this.editOrderProductDetailData.items.totalPrice],
         });
@@ -103,14 +103,14 @@ export class OrderDetailProductComponent implements OnInit {
   // lấy product ID
 
   onChange(newValue: any) {
-    this.amount = this.listProduct.find((item: any) => item.productId == newValue);
-    let gtln = this.amount.productAmount;
+    this.product = this.listProduct.find((item: any) => item.productId == newValue);
+    let gtln = this.product.productAmount;
     this.OrderDetailProductForm = this.formBuilder.group(
       {
         id: 0,
         productId: [this.OrderDetailProductForm.value.productId, [Validators.required]],
-        productName: [this.amount.productName],
-        productAmmount: [this.OrderDetailProductForm.value.productAmmount, [Validators.required, Validators.min(1), Validators.max(gtln)]],
+        productName: [this.product.productName],
+        ammount: [this.OrderDetailProductForm.value.ammount, [Validators.required, Validators.min(1), Validators.max(gtln)]],
         price: [this.OrderDetailProductForm.value.price, [Validators.required, Validators.min(1), Validators.max(500)]],
         totalPrice: [this.OrderDetailProductForm.value.totalPrice, [Validators.required, Validators.min(1), Validators.max(500)]],
       });
@@ -140,7 +140,7 @@ export class OrderDetailProductComponent implements OnInit {
 
   // tính totalPrice từng product
   updateTotal() {
-    let tongtien = parseFloat((this.OrderDetailProductForm.value.price * this.OrderDetailProductForm.value.productAmmount).toFixed(2));
+    let tongtien = parseFloat((this.OrderDetailProductForm.value.price * this.OrderDetailProductForm.value.ammount).toFixed(2));
     this.OrderDetailProductForm.controls['totalPrice'].setValue(tongtien);
   }
 

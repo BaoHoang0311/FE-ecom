@@ -66,17 +66,44 @@ export class OrderDetailComponent implements OnInit {
                 customerId: res.data[0].customerId,
                 totalPrice: res.data[0].totalPrice,
               });
-            this.apiOrder.orderItems = res.data[0].orderDetails;
 
-            console.log(this.apiOrder.orderItems);
+            // let b = [];
+            // for (let i = 0; i < res.data[0].orderDetails.length; i++) {
+            //   b.push({
+            //     productId: res.data[0].orderDetails[i].productId,
+            //     productName: res.data[0].orderDetails[i].product.fullName,
+            //     ammount: res.data[0].orderDetails[i].ammount,
+            //     price: res.data[0].orderDetails[i].price,
+            //     totalPrice: res.data[0].orderDetails[i].totalPrice,
+            //   });
+            // }
+
+            // mapdata 
+            this.apiOrder.orderItems = this.ApitoOderDetail(res.data[0].orderDetails);
+            console.log(`here`, this.apiOrder.orderItems);
 
           },
           error: (err) => { console.log(err); }
         });
+    }
+    else {
 
-    };
-
+    }
   };
+
+  ApitoOderDetail(oderDetailsList: any) {
+    let b = [];
+    for (let i = 0; i < oderDetailsList.length; i++) {
+      b.push({
+        productId: oderDetailsList[i].productId,
+        productName: oderDetailsList[i].product.fullName,
+        ammount: oderDetailsList[i].ammount,
+        price: oderDetailsList[i].price,
+        totalPrice: oderDetailsList[i].totalPrice,
+      });
+    }
+    return b;
+  }
 
   // dropdown danh sách khách hàng
   getAllCustomers() {
