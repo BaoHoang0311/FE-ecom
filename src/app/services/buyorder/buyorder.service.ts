@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BuyOrder } from '../model/buyorder.model';
 
 
 @Injectable({
@@ -7,26 +8,29 @@ import { HttpClient } from '@angular/common/http';
 })
 export class BuyorderService {
 
+  buyorder!: BuyOrder;
+  buyorderItems: any = [];
+
   constructor(private http: HttpClient) { }
   url = 'https://localhost:44381/api/';
 
-  getBuyOrders() {
-    return this.http.get<any>(this.url + 'BuyOrders?pageNumber=1&pageSize=20');
+  getBuyOrder() {
+    return this.http.get<any>(this.url + 'BuyOrders?pageNumber=1&pageSize=200');
   }
 
   getBuyOrdersbyId(id: any) {
     return this.http.get<any>(this.url + `BuyOrders/${id}`);
   }
 
-  postBuyOrders(data: any) {
+  postBuyOrder(data: any) {
     return this.http.post<any>(this.url + 'BuyOrders', data);
   }
 
-  putBuyOrders(data: any) {
+  putBuyOrder(data: any) {
     return this.http.put<any>(this.url + 'BuyOrders', data);
   }
 
-  delBuyOrders(id: any) {
+  delBuyOrder(id: any) {
     return this.http.delete<any>(this.url + `BuyOrders?id=${id}`);
   }
 }

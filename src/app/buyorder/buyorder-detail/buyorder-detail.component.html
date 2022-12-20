@@ -1,1 +1,101 @@
-<p>buyorder-detail works!</p>
+<div class="container">
+    <h1 style="text-align: center;">{{headerOrderDetail}} Buy Order</h1>
+
+    <form [formGroup]="BuyOrderForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Order No.</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">#</div>
+                        </div>
+                        <input type="text" formControlName="orderNo" class="form-control"
+                            [ngClass]="{'is-invalid': submitted && f['orderNo'].errors }">
+                        <div *ngIf="submitted && f['orderNo'].errors" class="invalid-feedback">
+                            <div *ngIf="f['orderNo'].errors['required']">orderNo is required</div>
+                            <div *ngIf="f['orderNo'].errors['minlength']">
+                                Ký tự phải lớn hơn 3
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <label>Customer</label>
+                    <select formControlName="customerId" class="form-control" required
+                        [ngClass]="{'is-invalid': submitted && f['customerId'].errors }">
+                        <option value="">Yêu cầu chọn</option>
+                        <option *ngFor="let item of listCustomer" value="{{item.customerId}}">{{item.fullName}}</option>
+                        <div *ngIf="submitted && f['customerId'].errors" class="invalid-feedback">
+                            <div *ngIf="f['customerId'].errors['required']">customer is required</div>
+                        </div>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Grand Total</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        <input name="GTotal" formControlName="totalPrice" class="form-control" readonly>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- order items table-->
+        <table class="table table-borderless">
+            <thead class="thead-light">
+                <th>Id</th>
+                <th>Product Name</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Action</th>
+                <th>
+                    <a class="btn btn-sm btn-success text-white" (click)="openDialogAddProductDetail()"><i
+                            class="fa fa-plus"></i> Add
+                        Item</a>
+                </th>
+            </thead>
+            <tbody>
+                <tr *ngIf="apibuyOrder.buyorderItems.length==0"
+                    [class.text-danger]="apibuyOrder.buyorderItems.length==0">
+                    <td class="font-italic text-center" colspan="5">
+                        No orderdetail selected for this order.
+                    </td>
+                </tr>
+
+                <tr *ngFor="let item of apibuyOrder.buyorderItems;let i=index;">
+                    <td>{{i+1}}</td>
+                    <td>{{item.productName}}</td>
+                    <td>{{item.productAmmount}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.totalPrice}}</td>
+                    <td>
+                        <a mat-icon-button color="primary" (click)="onEditBuyOrderDetail(i,item)">
+                            <mat-icon> edit </mat-icon>
+                        </a>
+                        <a mat-icon-button color="warn" (click)="onDeleteBuyOrderDetail(i,item)">
+                            <mat-icon>delete </mat-icon>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-dark" mat-raised-button color="warn"><i class="fa fa-database"></i>
+                Submit</button>
+            <!-- <a class="btn btn-outline-dark ml-1" routerLink="/Order"><i class="fa fa-table"></i> View Orders</a> -->
+        </div>
+    </form>
+</div>

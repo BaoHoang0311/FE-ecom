@@ -12,12 +12,10 @@ import { OrderService } from 'src/app/services/order/order.service';
 @Component({
   selector: 'app-order-detail-product',
   templateUrl: './order-detail-product.component.html',
-  styleUrls: ['./order-detail-product.component.css']
 })
 export class OrderDetailProductComponent implements OnInit {
 
   constructor(
-    public dialogRef: MatDialogRef<OrderDetailComponent>,
     private formBuilder: FormBuilder,
     private api: ApiService,
     private diaglog: MatDialogRef<OrderDetailProductComponent>,
@@ -141,11 +139,11 @@ export class OrderDetailProductComponent implements OnInit {
       if (this.OrderDetailProductForm.value.productName == null) {
         /*
           khi edit thi ko edit name thi se khong co ten phai set nhu vay
-          con da set thi khong can
+          con da eidt thi khong can
         */
         this.OrderDetailProductForm.value.productName = this.editOrderProductDetailData.items.productName;
       }
-
+      // giữ lại  BuyOrderDetailId
       if (this.editOrderProductDetailData.items.id != 0) {
         this.OrderDetailProductForm.value.id = this.editOrderProductDetailData.items.id;
         console.log('this.OrderDetailProductForm.value.id', this.OrderDetailProductForm.value.id)

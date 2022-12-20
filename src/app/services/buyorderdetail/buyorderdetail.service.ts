@@ -4,12 +4,12 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class OrderDetailService {
+export class BuyorderdetailService {
 
   constructor(private http: HttpClient) { }
   url = 'https://localhost:44381/api/';
 
-  delOrderDetail(id: any) {
-    return this.http.delete<any>(this.url + `OrderDetail?id=${id}`);
+  delBuyOrderDetail(id: any) {
+    return this.http.delete<any>(this.url + `BuyOrderDetail?id=${id}`);
   }
 }

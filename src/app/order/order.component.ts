@@ -48,7 +48,6 @@ export class OrderComponent implements OnInit {
 
 
   openForEdit(row: any) {
-    console.log('editzzzzzzzzzzzzzzzzzzz', row);
     this.router.navigate(['/Order/edit/' + row.id]);
     // lấy cái roid làm việc
 

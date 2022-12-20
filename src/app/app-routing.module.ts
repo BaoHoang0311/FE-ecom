@@ -11,7 +11,14 @@ import { OrderDetailComponent } from './order/order-detail/order-detail.componen
 const routes: Routes = [
   { path: 'Customer', component: CustomerComponent },
   { path: 'Product', component: ProductComponent },
+
   { path: 'BuyOrder', component: BuyorderComponent },
+  {
+    path: 'BuyOrder', children: [
+      { path: 'add', component: BuyorderDetailComponent },
+      { path: 'edit/:id', component: BuyorderDetailComponent }
+    ]
+  },
 
 
   { path: 'Order', component: OrderComponent },

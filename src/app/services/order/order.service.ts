@@ -10,11 +10,11 @@ export class OrderService {
   order!: Order;
   orderItems: any = [];
 
-  constructor( private http: HttpClient ) { }
+  constructor(private http: HttpClient) { }
   url = 'https://localhost:44381/api/';
 
   getOrder() {
-    return this.http.get<any>(this.url + 'Orders?pageNumber=1&pageSize=20');
+    return this.http.get<any>(this.url + 'Orders?pageNumber=1&pageSize=200');
   }
 
   getOrderbyId(id: any) {

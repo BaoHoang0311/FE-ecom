@@ -14,7 +14,7 @@ export class ApiService {
   }
   //https://localhost:44381/api/Products?pageNumber=1&pageSize=100
   getProduct() {
-    return this.http.get<any>(this.url + 'Products?pageNumber=1&pageSize=20');
+    return this.http.get<any>(this.url + 'Products?pageNumber=1&pageSize=200');
   }
 
   putProduct(data: any) {
