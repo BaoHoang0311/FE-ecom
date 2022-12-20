@@ -53,7 +53,7 @@ export class OrderDetailProductComponent implements OnInit {
       {
         id: 0,
         productId: ['', [Validators.required]],
-        ammount: ['', [Validators.required, Validators.min(1)]],
+        productAmmount: ['', [Validators.required, Validators.min(1)]],
         price: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
         totalPrice: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
       });
@@ -61,12 +61,12 @@ export class OrderDetailProductComponent implements OnInit {
 
     if (this.editOrderProductDetailData) {
       this.actionBtn = "Update";
-      this.headerForm = "Update Order"
+      this.headerForm = "Update"
       this.OrderDetailProductForm = this.formBuilder.group(
         {
           id: this.editOrderProductDetailData.items.id,
           productId: [this.editOrderProductDetailData.items.productId, [Validators.required, Validators.minLength(3)]],
-          ammount: [this.editOrderProductDetailData.items.ammount, [Validators.required, Validators.email]],
+          productAmmount: [this.editOrderProductDetailData.items.productAmmount, [Validators.required, Validators.email]],
           price: [this.editOrderProductDetailData.items.price, [Validators.required, Validators.min(1), Validators.max(500)]],
           totalPrice: [this.editOrderProductDetailData.items.totalPrice],
         });
@@ -110,7 +110,7 @@ export class OrderDetailProductComponent implements OnInit {
         id: 0,
         productId: [this.OrderDetailProductForm.value.productId, [Validators.required]],
         productName: [this.product.productName],
-        ammount: [this.OrderDetailProductForm.value.ammount, [Validators.required, Validators.min(1), Validators.max(gtln)]],
+        productAmmount: [this.OrderDetailProductForm.value.productAmmount, [Validators.required, Validators.min(1), Validators.max(gtln)]],
         price: [this.OrderDetailProductForm.value.price, [Validators.required, Validators.min(1), Validators.max(500)]],
         totalPrice: [this.OrderDetailProductForm.value.totalPrice, [Validators.required, Validators.min(1), Validators.max(500)]],
       });
@@ -140,7 +140,7 @@ export class OrderDetailProductComponent implements OnInit {
 
   // tính totalPrice từng product
   updateTotal() {
-    let tongtien = parseFloat((this.OrderDetailProductForm.value.price * this.OrderDetailProductForm.value.ammount).toFixed(2));
+    let tongtien = parseFloat((this.OrderDetailProductForm.value.price * this.OrderDetailProductForm.value.productAmmount).toFixed(2));
     this.OrderDetailProductForm.controls['totalPrice'].setValue(tongtien);
   }
 

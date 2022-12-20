@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { OrderItem } from '../model/order-item.model';
+import { HttpClient } from '@angular/common/http';
 import { Order } from '../model/order.model';
 
 @Injectable({
@@ -14,15 +13,16 @@ export class OrderService {
   constructor(private http: HttpClient) { }
   url = 'https://localhost:44381/api/';
 
+  getOrder() {
+    return this.http.get<any>(this.url + 'Orders?pageNumber=1&pageSize=20');
+  }
+
   getOrderbyId(id: any) {
     return this.http.get<any>(this.url + `Orders/${id}`);
   }
 
   postOrder(data: any) {
     return this.http.post<any>(this.url + 'Orders', data);
-  }
-  getOrder() {
-    return this.http.get<any>(this.url + 'Orders?pageNumber=1&pageSize=20');
   }
 
   putOrder(data: any) {
@@ -32,6 +32,4 @@ export class OrderService {
   delOrder(id: any) {
     return this.http.delete<any>(this.url + `Orders?id=${id}`);
   }
-
-
 }

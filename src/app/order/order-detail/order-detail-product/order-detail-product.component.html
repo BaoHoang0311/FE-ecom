@@ -1,4 +1,4 @@
-<h2 class="dispaly-4">{{this.headerForm}} Order Item</h2>
+<h2 class="dispaly-4">{{headerForm}} Order Item</h2>
 <hr>
 <div class="register-form">
     <form [formGroup]="OrderDetailProductForm" autocomplete="off" (ngSubmit)="onSubmitOrderdetailProductinAddOrder()">
@@ -48,15 +48,16 @@
             <div class=" form-group col-md-6">
                 <label>Quantity</label>
                 <!-- max="{{this.gtln}}" -->
-                <input type="number" formControlName="ammount" class="form-control"
+                <input type="number" formControlName="productAmmount" class="form-control"
                     oninput="this.value = Math.abs(this.value)" min="1"
-                    [ngClass]="{ 'is-invalid': submitted && f['ammount'].errors }" (ngModelChange)="updateTotal()" />
-                <div *ngIf="submitted && f['ammount'].errors" class="invalid-feedback">
-                    <div *ngIf="f['ammount'].errors['required']">Ammount is required</div>
-                    <div *ngIf="f['ammount'].errors['min']">
+                    [ngClass]="{ 'is-invalid': submitted && f['productAmmount'].errors }"
+                    (ngModelChange)="updateTotal()" />
+                <div *ngIf="submitted && f['productAmmount'].errors" class="invalid-feedback">
+                    <div *ngIf="f['productAmmount'].errors['required']">Ammount is required</div>
+                    <div *ngIf="f['productAmmount'].errors['min']">
                         nhap dung so luong
                     </div>
-                    <div *ngIf="f['ammount'].errors['max']">
+                    <div *ngIf="f['productAmmount'].errors['max']">
                         nhap dung so luong trong kho
                     </div>
                 </div>
@@ -80,9 +81,3 @@
         </div>
     </form>
 </div>
-
-
-
-
-
-

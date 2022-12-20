@@ -1,5 +1,5 @@
 <div class="container">
-    <h1 style="text-align: center;">Add Update Order</h1>
+    <h1 style="text-align: center;">{{headerOrderDetail}} Order</h1>
 
     <form [formGroup]="OrderForm" (ngSubmit)="onSubmit()">
         <!-- <input type="hidden" name="OrderID"> -->
@@ -77,14 +77,14 @@
                 <tr *ngFor="let item of apiOrder.orderItems;let i=index;">
                     <td>{{i+1}}</td>
                     <td>{{item.productName}}</td>
-                    <td>{{item.ammount}}</td>
+                    <td>{{item.productAmmount}}</td>
                     <td>{{item.price}}</td>
                     <td>{{item.totalPrice}}</td>
                     <td>
                         <a mat-icon-button color="primary" (click)="onEditOrderDetail(i,item)">
                             <mat-icon> edit </mat-icon>
                         </a>
-                        <a mat-icon-button color="warn" (click)="onDeleteOrderDetail(i)">
+                        <a mat-icon-button color="warn" (click)="onDeleteOrderDetail(i,item)">
                             <mat-icon>delete </mat-icon>
                         </a>
                     </td>
