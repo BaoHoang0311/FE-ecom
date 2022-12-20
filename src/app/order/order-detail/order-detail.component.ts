@@ -69,18 +69,20 @@ export class OrderDetailComponent implements OnInit {
     this.apiOrder.getOrderbyId(parseInt(this.orderIdinUrl)).subscribe(
       {
         next: (res) => {
-          console.log(res.data);
           this.OrderForm = this.formBuilder.group(
             {
-              id: res.data[0].id,
+              orderId: res.data[0].id,
               orderNo: res.data[0].orderNo,
               customerId: res.data[0].customerId,
-              totalPrice: res.data[0].totalPrice,
+              totalPrice: 0,
             });
+
           // mapdata form API to listOrderDetails
           this.apiOrder.orderItems = this.ApitoOderDetail(res.data[0].orderDetails);
 
-          console.log(`here`, this.apiOrder.orderItems);
+          // this.OrderForm.value.totalPrice = res.data[0].totalPrice;
+          this.updateGrandTotal();
+
         },
         error: (err) => { console.log(err); }
       });
@@ -120,6 +122,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   onSubmit() {
+
     this.submitted = true;
 
     if (this.OrderForm.invalid) {
@@ -127,40 +130,47 @@ export class OrderDetailComponent implements OnInit {
       return;
     }
 
-    var body = {
-      orderId: 0,
-      orderNo: this.OrderForm.value.orderNo,
-      customerId: parseInt(this.OrderForm.value.customerId),
-      totalPrice: this.OrderForm.value.totalPrice,
-      orderDetailDtos: this.apiOrder.orderItems,
-    };
-    console.log(`body`, body);
-    console.log(`apiOrder.orderItems`, this.apiOrder.orderItems);
+    if (this.orderIdinUrl != null) {
+      console.log('this.OrderForm.value', this.OrderForm.value);
+      console.log('this.apiOrder.orderItems', this.apiOrder.orderItems);
+    }
+    // Submit not id 
+    else {
+      var body = {
+        orderId: 0,
+        orderNo: this.OrderForm.value.orderNo,
+        customerId: parseInt(this.OrderForm.value.customerId),
+        totalPrice: this.OrderForm.value.totalPrice,
+        orderDetailDtos: this.apiOrder.orderItems,
+      };
 
-    this.apiOrder.postOrder(body)
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          if (res.statusCode === 200) {
-            this.notifyService.showSuccess("Add Order success!", "Thong bao");
-            this.OrderForm.reset();
-            this.apiOrder.orderItems.length = [];
-            this.router.navigate(['/Order'])
-          }
-          else {
+      console.log(`body`, body);
+      console.log('this.apiOrder.orderItems', this.apiOrder.orderItems);
+
+      this.apiOrder.postOrder(body)
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            if (res.statusCode === 200) {
+              this.notifyService.showSuccess("Add Order success!", "Thong bao");
+              this.OrderForm.reset();
+              this.apiOrder.orderItems.length = [];
+              this.router.navigate(['/Order'])
+            }
+            else {
+              this.notifyService.showError("Something is wrong", "Thong bao")
+            }
+          },
+          error: () => {
             this.notifyService.showError("Something is wrong", "Thong bao")
           }
-        },
-        error: () => {
-          this.notifyService.showError("Something is wrong", "Thong bao")
-        }
-      })
+        })
+    }
   }
 
   get f(): { [key: string]: AbstractControl } {
     return this.OrderForm.controls;
   }
-
 
   openDialogAddProductDetail() {
 
@@ -175,24 +185,26 @@ export class OrderDetailComponent implements OnInit {
   }
 
   updateGrandTotal() {
-    let Sum_orderDetail = this.apiOrder.orderItems.reduce((prev: any, curr: any) => {
+    let sumTotalPriceOrderDetail = this.apiOrder.orderItems.reduce((prev: any, curr: any) => {
       return prev + curr.totalPrice;
     }, 0);
-    let gt = parseFloat(Sum_orderDetail);
-    this.OrderForm.controls['totalPrice'].setValue(gt);
+    let gT = parseFloat(sumTotalPriceOrderDetail);
+
+    //set GrandTotal
+    this.OrderForm.controls['totalPrice'].setValue(gT);
   }
 
   onDeleteOrderDetail(index: any, item: any) {
-    if (this.orderIdinUrl != null) {
 
-      console.log(`ggggggg`, item);
+    if (this.orderIdinUrl != null) {
 
       this.orderDetailApi.delOrderDetail(item.id).subscribe({
         next: (res) => {
           if (res.statusCode === 200) {
             this.notifyService.showSuccess("Delete OrderDetail success!", "Thong bao");
             this.getOrderByID(parseInt(this.orderIdinUrl));
-            this.updateGrandTotal();
+            this.apiOrder.orderItems.splice(index, 1);
+            console.log(`tinh tien `, this.apiOrder.orderItems);
           }
           else {
             this.notifyService.showError("Something is wrong", "Thong bao");
@@ -204,20 +216,20 @@ export class OrderDetailComponent implements OnInit {
       });
     }
     else {
+      console.log(`indexadd`, index);
       this.apiOrder.orderItems.splice(index, 1);
     }
-
     this.updateGrandTotal();
   }
 
   onEditOrderDetail(index: any, item: any) {
-    console.log(`onEditOrderDetail`, item);
-    console.log(`dsda`, index);
+    console.log('item', item)
+    console.log('index', index)
     this.diaglog.open(OrderDetailProductComponent,
       {
         width: '30%',
         height: '60%',
-        data: { i: index, items: item }
+        data: { idx: index, items: item }
       }
     ).afterClosed().subscribe(val => {
       this.updateGrandTotal();

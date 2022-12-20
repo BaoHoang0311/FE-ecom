@@ -23,6 +23,7 @@ export class OrderDetailProductComponent implements OnInit {
     private diaglog: MatDialogRef<OrderDetailProductComponent>,
     private apiOrder: OrderService,
 
+    // dung chung Addorder + Editorder
     @Inject(MAT_DIALOG_DATA) public editOrderProductDetailData: any,
 
   ) { }
@@ -37,11 +38,14 @@ export class OrderDetailProductComponent implements OnInit {
   actionBtn = "Add";
   headerForm = "Add";
 
+  gtln: any;
+
   OrderDetailProductForm: FormGroup = new FormGroup({
     productId: new FormControl(''),
     ammount: new FormControl(''),
     price: new FormControl(''),
     totalPrice: new FormControl(''),
+    productName: new FormControl(''),
   });
 
   // disabledItem: number = 0;
@@ -49,33 +53,29 @@ export class OrderDetailProductComponent implements OnInit {
   ngOnInit(): void {
     this.getAllProducts();
 
-    this.OrderDetailProductForm = this.formBuilder.group(
-      {
-        id: 0,
-        productId: ['', [Validators.required]],
-        productAmmount: ['', [Validators.required, Validators.min(1)]],
-        price: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
-        totalPrice: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
-      });
-
-
     if (this.editOrderProductDetailData) {
       this.actionBtn = "Update";
-      this.headerForm = "Update"
+      this.headerForm = "Update";
       this.OrderDetailProductForm = this.formBuilder.group(
         {
           id: this.editOrderProductDetailData.items.id,
-          productId: [this.editOrderProductDetailData.items.productId, [Validators.required, Validators.minLength(3)]],
-          productAmmount: [this.editOrderProductDetailData.items.productAmmount, [Validators.required, Validators.email]],
+          productId: [this.editOrderProductDetailData.items.productId, [Validators.required]],
+          productAmmount: [this.editOrderProductDetailData.items.productAmmount, [Validators.required, Validators.min(1)]],
           price: [this.editOrderProductDetailData.items.price, [Validators.required, Validators.min(1), Validators.max(500)]],
           totalPrice: [this.editOrderProductDetailData.items.totalPrice],
         });
       this.OrderDetailProductForm.controls['totalPrice'].setValue(this.editOrderProductDetailData.items.totalPrice);
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(`dsdsdsdsdsd`, changes);
+    else {
+      this.OrderDetailProductForm = this.formBuilder.group(
+        {
+          id: 0,
+          productId: ['', [Validators.required]],
+          productAmmount: ['', [Validators.required, Validators.min(1)]],
+          price: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
+          totalPrice: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
+        });
+    }
   }
 
   get f(): { [key: string]: AbstractControl } {
@@ -97,43 +97,53 @@ export class OrderDetailProductComponent implements OnInit {
         },
         error: (err) => { console.log(err); }
       });
-
   }
 
   // lấy product ID
-
   onChange(newValue: any) {
+    console.log('newValue', newValue);
     this.product = this.listProduct.find((item: any) => item.productId == newValue);
-    let gtln = this.product.productAmount;
+    console.log('this.product', this.product)
+    this.gtln = this.product.productAmount;
+    console.log('this.gtln', this.gtln);
     this.OrderDetailProductForm = this.formBuilder.group(
       {
         id: 0,
         productId: [this.OrderDetailProductForm.value.productId, [Validators.required]],
         productName: [this.product.productName],
-        productAmmount: [this.OrderDetailProductForm.value.productAmmount, [Validators.required, Validators.min(1), Validators.max(gtln)]],
+        productAmmount: [this.OrderDetailProductForm.value.productAmmount, [Validators.required, Validators.min(1), Validators.max(this.gtln)]],
         price: [this.OrderDetailProductForm.value.price, [Validators.required, Validators.min(1), Validators.max(500)]],
         totalPrice: [this.OrderDetailProductForm.value.totalPrice, [Validators.required, Validators.min(1), Validators.max(500)]],
       });
   }
 
-  onSubmitOrderdetailProductinAddOrder() {
+  // Add or Update buttton in order detail productform
+  on_Submit_OrderdetailProduct_in_AddOrder() {
 
+    this.submitted = true;
+    // data blank => Form AddItem (dung chung 1 form)
     if (!this.editOrderProductDetailData) {
-      this.submitted = true;
       if (this.OrderDetailProductForm.invalid) {
-        console.log('ssasas', this.OrderDetailProductForm);
-        console.log(this.OrderDetailProductForm.value);
         return;
       }
       this.apiOrder.orderItems.push(this.OrderDetailProductForm.value);
       this.diaglog.close('addOrderDetai');
     }
+    // have data => Form EditItem (dung chung 1 form)
     else {
-      console.log(`edit here`, this.OrderDetailProductForm.value);
-      console.log(`777777`, this.editOrderProductDetailData)
-
-      this.apiOrder.orderItems[this.editOrderProductDetailData.i] = this.OrderDetailProductForm.value;
-      console.log(`888888`, this.apiOrder.orderItems);
+      if (this.OrderDetailProductForm.invalid) {
+        return;
+      }
+      this.editOrderProductDetailData
+      console.log(`xuong day`);
+      // pass datafromDiaglog { idx : index, items : item}
+      this.apiOrder.orderItems[this.editOrderProductDetailData.idx] = this.OrderDetailProductForm.value;
+      console.log('this.OrderDetailProductForm.value', this.OrderDetailProductForm.value)
+      if (this.OrderDetailProductForm.value.productName == null) {
+        this.OrderDetailProductForm.value.productName = "dasdasdadasd";
+        console.log(`hoho`);
+        console.log(this.OrderDetailProductForm.value.productName);
+      }
       this.diaglog.close('editOrderDetai');
     }
   }

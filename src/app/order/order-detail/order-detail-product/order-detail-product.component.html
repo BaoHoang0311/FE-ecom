@@ -1,7 +1,8 @@
 <h2 class="dispaly-4">{{headerForm}} Order Item</h2>
 <hr>
 <div class="register-form">
-    <form [formGroup]="OrderDetailProductForm" autocomplete="off" (ngSubmit)="onSubmitOrderdetailProductinAddOrder()">
+    <form [formGroup]="OrderDetailProductForm" autocomplete="off"
+        (ngSubmit)="on_Submit_OrderdetailProduct_in_AddOrder()">
         <input type="hidden" name="OrderItemID">
         <input type="hidden" name="OrderID">
         <input type="hidden" name="ItemName">
@@ -47,9 +48,8 @@
             </div>
             <div class=" form-group col-md-6">
                 <label>Quantity</label>
-                <!-- max="{{this.gtln}}" -->
                 <input type="number" formControlName="productAmmount" class="form-control"
-                    oninput="this.value = Math.abs(this.value)" min="1"
+                    oninput="this.value = Math.abs(this.value)" min="1" max="{{this.gtln}}"
                     [ngClass]="{ 'is-invalid': submitted && f['productAmmount'].errors }"
                     (ngModelChange)="updateTotal()" />
                 <div *ngIf="submitted && f['productAmmount'].errors" class="invalid-feedback">
