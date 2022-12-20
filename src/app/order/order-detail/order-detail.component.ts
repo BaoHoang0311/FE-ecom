@@ -129,12 +129,40 @@ export class OrderDetailComponent implements OnInit {
       console.log('bisai', this.OrderForm);
       return;
     }
-
+    // PutApi
     if (this.orderIdinUrl != null) {
+
       console.log('this.OrderForm.value', this.OrderForm.value);
       console.log('this.apiOrder.orderItems', this.apiOrder.orderItems);
+
+      var bodyPut = {
+        orderId: this.OrderForm.value.orderId,
+        orderNo: this.OrderForm.value.orderNo,
+        customerId: parseInt(this.OrderForm.value.customerId),
+        totalPrice: this.OrderForm.value.totalPrice,
+        orderDetailDtos: this.apiOrder.orderItems,
+      };
+
+      this.apiOrder.putOrder(bodyPut)
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            if (res.statusCode === 200) {
+              this.notifyService.showSuccess("Update Order success!", "Thong bao");
+              this.OrderForm.reset();
+              this.apiOrder.orderItems.length = [];
+              this.router.navigate(['/Order'])
+            }
+            else {
+              this.notifyService.showError("Update is wrong", "Thong bao")
+            }
+          },
+          error: () => {
+            this.notifyService.showError("Update is wrong", "Thong bao")
+          }
+        })
     }
-    // Submit not id 
+    // PostApi
     else {
       var body = {
         orderId: 0,

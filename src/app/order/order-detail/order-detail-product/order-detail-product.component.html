@@ -8,8 +8,6 @@
         <input type="hidden" name="ItemName">
         <div class="form-group">
 
-            <!-- [disabled]="item.productId == '01' " -->
-
             <label>Product Item</label>
             <select formControlName="productId" class="form-control" required
                 [ngClass]="{'is-invalid': submitted && f['productId'].errors }" (ngModelChange)="onChange($event)">

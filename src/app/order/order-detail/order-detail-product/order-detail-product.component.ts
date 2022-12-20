@@ -73,7 +73,7 @@ export class OrderDetailProductComponent implements OnInit {
           productId: ['', [Validators.required]],
           productAmmount: ['', [Validators.required, Validators.min(1)]],
           price: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
-          totalPrice: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
+          totalPrice: ['', [Validators.required]],
         });
     }
   }
@@ -99,7 +99,7 @@ export class OrderDetailProductComponent implements OnInit {
       });
   }
 
-  // lấy product ID
+  // lấy productId
   onChange(newValue: any) {
     console.log('newValue', newValue);
     this.product = this.listProduct.find((item: any) => item.productId == newValue);
@@ -117,11 +117,10 @@ export class OrderDetailProductComponent implements OnInit {
       });
   }
 
-  // Add or Update buttton in order detail productform
+  // Add or Update buttton in order_detail_product_form
   on_Submit_OrderdetailProduct_in_AddOrder() {
-
     this.submitted = true;
-    // data blank => Form AddItem (dung chung 1 form)
+    // (dung chung 1 form) => data blank => Form AddItem 
     if (!this.editOrderProductDetailData) {
       if (this.OrderDetailProductForm.invalid) {
         return;
@@ -129,20 +128,27 @@ export class OrderDetailProductComponent implements OnInit {
       this.apiOrder.orderItems.push(this.OrderDetailProductForm.value);
       this.diaglog.close('addOrderDetai');
     }
-    // have data => Form EditItem (dung chung 1 form)
+    // (dung chung 1 form) => have data => Form Edititem 
     else {
       if (this.OrderDetailProductForm.invalid) {
         return;
       }
-      this.editOrderProductDetailData
-      console.log(`xuong day`);
-      // pass datafromDiaglog { idx : index, items : item}
+      // pass datafromDiaglog this.editOrderProductDetailData = { idx : index, items : item} (idx: index in list (0,1) )
       this.apiOrder.orderItems[this.editOrderProductDetailData.idx] = this.OrderDetailProductForm.value;
+      console.log('this.apiOrder.orderItems[this.editOrderProductDetailData.idx]', this.apiOrder.orderItems[this.editOrderProductDetailData.idx])
       console.log('this.OrderDetailProductForm.value', this.OrderDetailProductForm.value)
+      // name for productName vi tra ve ko co properties productName
       if (this.OrderDetailProductForm.value.productName == null) {
-        this.OrderDetailProductForm.value.productName = "dasdasdadasd";
-        console.log(`hoho`);
-        console.log(this.OrderDetailProductForm.value.productName);
+        /*
+          khi edit thi ko edit name thi se khong co ten phai set nhu vay
+          con da set thi khong can
+        */
+        this.OrderDetailProductForm.value.productName = this.editOrderProductDetailData.items.productName;
+      }
+
+      if (this.editOrderProductDetailData.items.id != 0) {
+        this.OrderDetailProductForm.value.id = this.editOrderProductDetailData.items.id;
+        console.log('this.OrderDetailProductForm.value.id', this.OrderDetailProductForm.value.id)
       }
       this.diaglog.close('editOrderDetai');
     }
@@ -153,5 +159,4 @@ export class OrderDetailProductComponent implements OnInit {
     let tongtien = parseFloat((this.OrderDetailProductForm.value.price * this.OrderDetailProductForm.value.productAmmount).toFixed(2));
     this.OrderDetailProductForm.controls['totalPrice'].setValue(tongtien);
   }
-
 }
