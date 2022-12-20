@@ -10,7 +10,7 @@ export class OrderService {
   order!: Order;
   orderItems: any = [];
 
-  constructor(private http: HttpClient) { }
+  constructor( private http: HttpClient ) { }
   url = 'https://localhost:44381/api/';
 
   getOrder() {

@@ -29,6 +29,7 @@ import { OrderDetailComponent } from './order/order-detail/order-detail.componen
 import { BuyorderDetailComponent } from './buyorder/buyorder-detail/buyorder-detail.component';
 import { OrderDetailProductComponent } from './order/order-detail/order-detail-product/order-detail-product.component';
 import { OrderDiaglogDeleteComponent } from './order/order-diaglog-delete/order-diaglog-delete.component';
+import { BuyorderDiaglogDeleteComponent } from './buyorder/buyorder-diaglog-delete/buyorder-diaglog-delete.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,6 +45,7 @@ import { OrderDiaglogDeleteComponent } from './order/order-diaglog-delete/order-
     BuyorderDetailComponent,
     OrderDetailProductComponent,
     OrderDiaglogDeleteComponent,
+    BuyorderDiaglogDeleteComponent,
   ],
   imports: [
     BrowserModule,
