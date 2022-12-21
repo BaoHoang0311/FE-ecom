@@ -37,7 +37,7 @@ export class BuyorderDetailProductComponent implements OnInit {
 
   BuyOrderDetailProductForm: FormGroup = new FormGroup({
     productId: new FormControl(''),
-    ammount: new FormControl(''),
+    productAmmount: new FormControl(''),
     price: new FormControl(''),
     totalPrice: new FormControl(''),
     productName: new FormControl(''),
@@ -57,7 +57,7 @@ export class BuyorderDetailProductComponent implements OnInit {
           productId: [this.editBuyOrderProductDetailData.items.productId, [Validators.required]],
           productAmmount: [this.editBuyOrderProductDetailData.items.productAmmount, [Validators.required, Validators.min(1)]],
           price: [this.editBuyOrderProductDetailData.items.price, [Validators.required, Validators.min(1), Validators.max(500)]],
-          totalPrice: [this.editBuyOrderProductDetailData.items.totalPrice],
+          totalPrice: [this.editBuyOrderProductDetailData.items.totalPrice, [Validators.required]],
         });
       this.BuyOrderDetailProductForm.controls['totalPrice'].setValue(this.editBuyOrderProductDetailData.items.totalPrice);
     }
@@ -70,6 +70,14 @@ export class BuyorderDetailProductComponent implements OnInit {
           price: ['', [Validators.required, Validators.min(1), Validators.max(500)]],
           totalPrice: ['', [Validators.required]],
         });
+    }
+  }
+
+  ngAfterContentChecked() {
+    this.cdRef.detectChanges();
+    this.onChange(this.BuyOrderDetailProductForm.value.productId);
+    if (this.BuyOrderDetailProductForm.invalid) {
+      return;
     }
   }
 
@@ -89,13 +97,12 @@ export class BuyorderDetailProductComponent implements OnInit {
         error: (err) => { console.log(err); }
       });
   }
+
   get f(): { [key: string]: AbstractControl } {
     return this.BuyOrderDetailProductForm.controls;
   }
-  ngAfterContentChecked() {
-    this.cdRef.detectChanges();
 
-  }
+
   on_Submit_BuyOrderdetailProduct_in_AddBuyOrder() {
     this.submitted = true;
     // (dung chung 1 form) => data blank => Form AddItem 
@@ -127,42 +134,28 @@ export class BuyorderDetailProductComponent implements OnInit {
         this.BuyOrderDetailProductForm.value.id = this.editBuyOrderProductDetailData.items.id;
 
         console.log('this.BuyOrderDetailProductForm.value.id', this.BuyOrderDetailProductForm.value.id);
-
-        this.gtln = 120;
-        this.BuyOrderDetailProductForm = this.formBuilder.group(
-          {
-            id: 0,
-            productId: [this.apibuyOrder.buyorderItems[this.editBuyOrderProductDetailData.idx].productId, [Validators.required]],
-            productName: [this.BuyOrderDetailProductForm.value.productName],
-            productAmmount: [this.apibuyOrder.buyorderItems[this.editBuyOrderProductDetailData.idx].productAmmount, [Validators.required, Validators.min(1)]],
-            price: [this.apibuyOrder.buyorderItems[this.editBuyOrderProductDetailData.idx].price, [Validators.required, Validators.min(1), Validators.max(500)]],
-            totalPrice: [this.apibuyOrder.buyorderItems[this.editBuyOrderProductDetailData.idx].totalPrice, [Validators.required, Validators.min(1), Validators.max(500)]],
-          });
-        // this.onChange(this.BuyOrderDetailProductForm.value.productId);
-        if (this.BuyOrderDetailProductForm.invalid) {
-          return;
-        }
-
       }
       this.diaglog.close('editOrderDetai');
     }
   }
   onChange(newValue: any) {
-    console.log('newValue', newValue);
-    this.product = this.listProduct.find((item: any) => item.productId == newValue);
-    console.log('this.product', this.product)
-    this.gtln = this.product.productAmount;
-    console.log('this.gtln', this.gtln);
-    this.BuyOrderDetailProductForm = this.formBuilder.group(
-      {
-        id: 0,
-        productId: [this.BuyOrderDetailProductForm.value.productId, [Validators.required]],
-        productName: [this.product.productName],
-        productAmmount: [this.BuyOrderDetailProductForm.value.productAmmount, [Validators.required, Validators.min(1)]],
-        price: [this.BuyOrderDetailProductForm.value.price, [Validators.required, Validators.min(1), Validators.max(500)]],
-        totalPrice: [this.BuyOrderDetailProductForm.value.totalPrice, [Validators.required, Validators.min(1), Validators.max(500)]],
-      });
-
+    this.getAllProducts();
+    console.log(`newValue`, newValue);
+    if (newValue != "" && this.listProduct.length != 0) {
+      console.log(`listProduct`, this.listProduct);
+      this.product = this.listProduct.find((item: any) => item.productId == newValue);
+      console.log('this.product', this.product);
+      this.BuyOrderDetailProductForm = this.formBuilder.group(
+        {
+          id: 0,
+          productId: [this.BuyOrderDetailProductForm.value.productId, [Validators.required]],
+          productName: [this.BuyOrderDetailProductForm.value.productName],
+          productAmmount: [this.BuyOrderDetailProductForm.value.productAmmount, [Validators.required, Validators.min(1), Validators.max(this.product.productAmount)]],
+          price: [this.BuyOrderDetailProductForm.value.price, [Validators.required, Validators.min(1), Validators.max(500)]],
+          totalPrice: [this.BuyOrderDetailProductForm.value.totalPrice, [Validators.required, Validators.min(1), Validators.max(500)]],
+        });
+      console.log('this.BuyOrderDetailProductForm.value.productAmount', this.BuyOrderDetailProductForm.value.productAmount)
+    }
   }
   updateTotal() {
     let tongtien = parseFloat((this.BuyOrderDetailProductForm.value.price * this.BuyOrderDetailProductForm.value.productAmmount).toFixed(2));

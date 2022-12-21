@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/notification/notification.service';
@@ -38,15 +38,19 @@ export class BuyorderDetailComponent implements OnInit {
     orderNo: new FormControl(''),
     customerId: new FormControl(''),
     totalPrice: new FormControl(''),
+    // buyorderDetailDtos: this.formBuilder.array([Validators.required, Validators.minLength(1)])
+
   });
 
   ngOnInit(): void {
     this.getAllCustomers();
+
     this.BuyOrderForm = this.formBuilder.group(
       {
         orderNo: ['', [Validators.required, Validators.minLength(3)]],
         customerId: ['', Validators.required],
-        totalPrice: ['', Validators.required],
+        totalPrice: ['', [Validators.required, Validators.min(1)]],
+        // buyorderDetailDtos: this.formBuilder.array([Validators.required, Validators.minLength(1)])
       });
 
     this.buyorderIdinUrl = this.currentRoute.snapshot.paramMap.get('id');
@@ -90,11 +94,11 @@ export class BuyorderDetailComponent implements OnInit {
               this.router.navigate(['/BuyOrder'])
             }
             else {
-              this.notifyService.showError("Update is wrong", "Thong bao")
+              this.notifyService.showError(`${res.message}`, "Thong bao")
             }
           },
           error: () => {
-            this.notifyService.showError("Update is wrong", "Thong bao")
+            this.notifyService.showError("Update is wrong zzz", "Thong bao")
           }
         })
     }
@@ -131,6 +135,11 @@ export class BuyorderDetailComponent implements OnInit {
         })
     }
   }
+
+  get employees(): FormArray {
+    return this.BuyOrderForm.get('buyorderDetailDtos') as FormArray;
+  }
+
   // dropdown danh sách khách hàng
   getAllCustomers() {
     this.apiCus.getAllCustomer().subscribe(
@@ -146,6 +155,7 @@ export class BuyorderDetailComponent implements OnInit {
         error: (err) => { console.log(err); }
       });
   }
+
 
   getBuyOrderByID(id: any) {
     this.apibuyOrder.getBuyOrdersbyId(id).subscribe(
@@ -183,9 +193,12 @@ export class BuyorderDetailComponent implements OnInit {
     }
     return b;
   }
+
   get f(): { [key: string]: AbstractControl } {
     return this.BuyOrderForm.controls;
   }
+
+
   onEditBuyOrderDetail(index: any, item: any) {
     console.log('item', item)
     console.log('index', index)
@@ -208,8 +221,9 @@ export class BuyorderDetailComponent implements OnInit {
           if (res.statusCode === 200) {
             this.notifyService.showSuccess("Delete OrderDetail success!", "Thong bao");
             this.getBuyOrderByID(parseInt(this.buyorderIdinUrl));
+
             this.apibuyOrder.buyorderItems.splice(index, 1);
-            console.log(`tinh tien `, this.apibuyOrder.buyorderItems);
+            console.log(`this.apibuyOrder.buyorderItems`, this.apibuyOrder.buyorderItems);
           }
           else {
             this.notifyService.showError("Something is wrong", "Thong bao");
