@@ -54,5 +54,4 @@ export class BuyorderComponent implements OnInit {
         }
       });
   }
-
 }
