@@ -9,10 +9,11 @@ import { OrderItem } from 'src/app/services/model/order-item.model';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { ActivatedRoute, Router } from "@angular/router"
 import { OrderDetailService } from 'src/app/services/order-detail/order-detail.service';
+import { ApiService } from 'src/app/services/product/api.service';
+import { Product } from 'src/app/services/model/product.model';
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
-  styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
 
@@ -25,9 +26,14 @@ export class OrderDetailComponent implements OnInit {
     private currentRoute: ActivatedRoute,
     private router: Router,
     private orderDetailApi: OrderDetailService,
+    private api: ApiService,
   ) { }
 
   listCustomer: any = [];
+
+  listProduct: any = [];
+  product: any;
+  gtln: any;
 
   submitted = false;
   headerOrderDetail = "Add";
@@ -47,6 +53,8 @@ export class OrderDetailComponent implements OnInit {
   ngOnInit(): void {
 
     this.getAllCustomers();
+    this.getAllProducts();
+    
     this.OrderForm = this.formBuilder.group(
       {
         orderNo: ['', [Validators.required, Validators.minLength(3)]],
@@ -80,7 +88,6 @@ export class OrderDetailComponent implements OnInit {
           // mapdata form API to listOrderDetails
           this.apiOrder.orderItems = this.ApitoOderDetail(res.data[0].orderDetails);
 
-          // this.OrderForm.value.totalPrice = res.data[0].totalPrice;
           this.updateGrandTotal();
 
         },
@@ -250,14 +257,34 @@ export class OrderDetailComponent implements OnInit {
     this.updateGrandTotal();
   }
 
+  getAllProducts() {
+    this.api.getProduct().subscribe(
+      {
+        next: (res) => {
+
+          this.listProduct = res.data.map((elem: Product) => {
+            return {
+              productId: elem.id,
+              productName: elem.fullName,
+              productAmount: elem.amount,
+            }
+          });
+        },
+        error: (err) => { console.log(err); }
+      });
+  }
   onEditOrderDetail(index: any, item: any) {
-    console.log('item', item)
-    console.log('index', index)
+    console.log('item', item);
+    console.log('index', index);
+
+    this.product = this.listProduct.find((item: any) => item.productId == item.productId);
+    console.log('this.product', this.product);
+
     this.diaglog.open(OrderDetailProductComponent,
       {
         width: '30%',
         height: '60%',
-        data: { idx: index, items: item }
+        data: { idx: index, items: item, max: this.product }
       }
     ).afterClosed().subscribe(val => {
       this.updateGrandTotal();

@@ -6,6 +6,7 @@ import { Product } from 'src/app/services/model/product.model';
 import { ApiService } from 'src/app/services/product/api.service';
 import { BuyorderDetailComponent } from '../buyorder-detail.component';
 import { BuyorderService } from 'src/app/services/buyorder/buyorder.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-buyorder-detail-product',
@@ -23,17 +24,15 @@ export class BuyorderDetailProductComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public editBuyOrderProductDetailData: any,
   ) { }
 
-  dataSource !: MatTableDataSource<any>;
 
   listProduct: any = [];
   product: any;
+  gtln: any;
 
   submitted = false;
 
   actionBtn = "Add";
   headerForm = "Add";
-
-  gtln: any;
 
   BuyOrderDetailProductForm: FormGroup = new FormGroup({
     productId: new FormControl(''),
@@ -45,17 +44,22 @@ export class BuyorderDetailProductComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     this.getAllProducts();
 
+
     if (this.editBuyOrderProductDetailData) {
+      
       this.actionBtn = "Update";
       this.headerForm = "Update";
+      this.product = this.editBuyOrderProductDetailData.max;
 
       this.BuyOrderDetailProductForm = this.formBuilder.group(
         {
           id: this.editBuyOrderProductDetailData.items.id,
           productId: [this.editBuyOrderProductDetailData.items.productId, [Validators.required]],
-          productAmmount: [this.editBuyOrderProductDetailData.items.productAmmount, [Validators.required, Validators.min(1)]],
+          productAmmount: [this.editBuyOrderProductDetailData.items.productAmmount, [Validators.required, Validators.min(1), Validators.max(this.editBuyOrderProductDetailData.max.productAmount)]],
+          productName: [this.editBuyOrderProductDetailData.items.productName, [Validators.required, Validators.min(1)]],
           price: [this.editBuyOrderProductDetailData.items.price, [Validators.required, Validators.min(1), Validators.max(500)]],
           totalPrice: [this.editBuyOrderProductDetailData.items.totalPrice, [Validators.required]],
         });
@@ -73,19 +77,12 @@ export class BuyorderDetailProductComponent implements OnInit {
     }
   }
 
-  ngAfterContentChecked() {
-    this.cdRef.detectChanges();
-    this.onChange(this.BuyOrderDetailProductForm.value.productId);
-    if (this.BuyOrderDetailProductForm.invalid) {
-      return;
-    }
-  }
 
   getAllProducts() {
     this.api.getProduct().subscribe(
       {
         next: (res) => {
-          this.dataSource = new MatTableDataSource(res.data);
+
           this.listProduct = res.data.map((elem: Product) => {
             return {
               productId: elem.id,
@@ -111,6 +108,8 @@ export class BuyorderDetailProductComponent implements OnInit {
         return;
       }
       this.apibuyOrder.buyorderItems.push(this.BuyOrderDetailProductForm.value);
+      console.log('this.apibuyOrder.buyorderItems', this.apibuyOrder.buyorderItems)
+
       this.diaglog.close('addOrderDetai');
     }
     // (dung chung 1 form) => have data => Form Edititem 
@@ -139,23 +138,18 @@ export class BuyorderDetailProductComponent implements OnInit {
     }
   }
   onChange(newValue: any) {
-    this.getAllProducts();
-    console.log(`newValue`, newValue);
-    if (newValue != "" && this.listProduct.length != 0) {
-      console.log(`listProduct`, this.listProduct);
-      this.product = this.listProduct.find((item: any) => item.productId == newValue);
-      console.log('this.product', this.product);
-      this.BuyOrderDetailProductForm = this.formBuilder.group(
-        {
-          id: 0,
-          productId: [this.BuyOrderDetailProductForm.value.productId, [Validators.required]],
-          productName: [this.BuyOrderDetailProductForm.value.productName],
-          productAmmount: [this.BuyOrderDetailProductForm.value.productAmmount, [Validators.required, Validators.min(1), Validators.max(this.product.productAmount)]],
-          price: [this.BuyOrderDetailProductForm.value.price, [Validators.required, Validators.min(1), Validators.max(500)]],
-          totalPrice: [this.BuyOrderDetailProductForm.value.totalPrice, [Validators.required, Validators.min(1), Validators.max(500)]],
-        });
-      console.log('this.BuyOrderDetailProductForm.value.productAmount', this.BuyOrderDetailProductForm.value.productAmount)
-    }
+    this.product = this.listProduct.find((item: any) => item.productId == newValue);
+    this.BuyOrderDetailProductForm = this.formBuilder.group(
+      {
+        id: 0,
+        productId: [this.BuyOrderDetailProductForm.value.productId, [Validators.required]],
+        productName: [this.product.productName],
+        productAmmount: [this.BuyOrderDetailProductForm.value.productAmmount, [Validators.required, Validators.min(1), Validators.max(this.product.productAmount)]],
+        price: [this.BuyOrderDetailProductForm.value.price, [Validators.required, Validators.min(1), Validators.max(500)]],
+        totalPrice: [this.BuyOrderDetailProductForm.value.totalPrice, [Validators.required, Validators.min(1), Validators.max(500)]],
+      });
+    console.log('this.BuyOrderDetailProductForm.value.productAmount', this.BuyOrderDetailProductForm.value.productAmount)
+
   }
   updateTotal() {
     let tongtien = parseFloat((this.BuyOrderDetailProductForm.value.price * this.BuyOrderDetailProductForm.value.productAmmount).toFixed(2));

@@ -8,6 +8,8 @@ import { BuyorderdetailService } from 'src/app/services/buyorderdetail/buyorderd
 import { CustomerServiceService } from 'src/app/services/customer/customer-service.service';
 import { Customer } from 'src/app/services/model/customer.model';
 import { BuyorderDetailProductComponent } from './buyorder-detail-product/buyorder-detail-product.component';
+import { ApiService } from 'src/app/services/product/api.service';
+import { Product } from 'src/app/services/model/product.model';
 
 @Component({
   selector: 'app-buyorder-detail',
@@ -24,6 +26,8 @@ export class BuyorderDetailComponent implements OnInit {
     private notifyService: NotificationService,
     private currentRoute: ActivatedRoute,
     private router: Router,
+    private api: ApiService,
+
   ) { }
 
   listCustomer: any = [];
@@ -33,16 +37,21 @@ export class BuyorderDetailComponent implements OnInit {
 
   buyorderIdinUrl: any = "";
 
+  listProduct: any = [];
+  product: any;
+  gtln: any;
+
+
   BuyOrderForm: FormGroup = new FormGroup({
     buyOrderId: new FormControl(''),
     orderNo: new FormControl(''),
     customerId: new FormControl(''),
     totalPrice: new FormControl(''),
-    // buyorderDetailDtos: this.formBuilder.array([Validators.required, Validators.minLength(1)])
 
   });
 
   ngOnInit(): void {
+    this.getAllProducts();
     this.getAllCustomers();
 
     this.BuyOrderForm = this.formBuilder.group(
@@ -50,7 +59,6 @@ export class BuyorderDetailComponent implements OnInit {
         orderNo: ['', [Validators.required, Validators.minLength(3)]],
         customerId: ['', Validators.required],
         totalPrice: ['', [Validators.required, Validators.min(1)]],
-        // buyorderDetailDtos: this.formBuilder.array([Validators.required, Validators.minLength(1)])
       });
 
     this.buyorderIdinUrl = this.currentRoute.snapshot.paramMap.get('id');
@@ -198,15 +206,37 @@ export class BuyorderDetailComponent implements OnInit {
     return this.BuyOrderForm.controls;
   }
 
+  getAllProducts() {
+    this.api.getProduct().subscribe(
+      {
+        next: (res) => {
+
+          this.listProduct = res.data.map((elem: Product) => {
+            return {
+              productId: elem.id,
+              productName: elem.fullName,
+              productAmount: elem.amount,
+            }
+          });
+        },
+        error: (err) => { console.log(err); }
+      });
+  }
 
   onEditBuyOrderDetail(index: any, item: any) {
+
     console.log('item', item)
     console.log('index', index)
+
+    this.product = this.listProduct.find((item: any) => item.productId == item.productId);
+    console.log('this.product', this.product)
+
+
     this.diaglog.open(BuyorderDetailProductComponent,
       {
         width: '30%',
         height: '60%',
-        data: { idx: index, items: item }
+        data: { idx: index, items: item, max: this.product}
       }
     ).afterClosed().subscribe(val => {
       this.updateGrandTotal();

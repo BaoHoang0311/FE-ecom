@@ -54,11 +54,14 @@ export class OrderDetailProductComponent implements OnInit {
     if (this.editOrderProductDetailData) {
       this.actionBtn = "Update";
       this.headerForm = "Update";
+
+      this.product = this.editOrderProductDetailData.max;
+
       this.OrderDetailProductForm = this.formBuilder.group(
         {
           id: this.editOrderProductDetailData.items.id,
           productId: [this.editOrderProductDetailData.items.productId, [Validators.required]],
-          productAmmount: [this.editOrderProductDetailData.items.productAmmount, [Validators.required, Validators.min(1)]],
+          productAmmount: [this.editOrderProductDetailData.items.productAmmount, [Validators.required, Validators.min(1), Validators.max(this.editOrderProductDetailData.max.productAmount)]],
           price: [this.editOrderProductDetailData.items.price, [Validators.required, Validators.min(1), Validators.max(500)]],
           totalPrice: [this.editOrderProductDetailData.items.totalPrice],
         });
