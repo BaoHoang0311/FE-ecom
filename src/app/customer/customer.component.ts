@@ -53,6 +53,7 @@ export class CustomerComponent implements OnInit {
       this.apiCus.getAllCustomerPaging(this.sortBy, this.pagination, 3).subscribe((res: any) => {
          console.log("id chua click:  " + this.sortBy)
          this.Customers = res.data;
+         console.log('res.data', res.data)
          this.allCustomers = res.total;
       });
    }
@@ -78,9 +79,8 @@ export class CustomerComponent implements OnInit {
          console.log("id da click:  " + this.sortBy)
          this.apiCus.getAllCustomerPaging(this.sortBy, this.pagination, 3).subscribe((res: any) => {
             console.log("id da click:  " + this.sortBy)
-            this.Customers = res.data;
-            this.allCustomers = res.total;
-            console.log(res.data);
+            this.Customers = res.data.results;
+            this.allCustomers = res.data.TotalPages;
          });
       }
       else {
@@ -88,9 +88,9 @@ export class CustomerComponent implements OnInit {
          console.log("id da click:  " + this.sortBy)
          this.apiCus.getAllCustomerPaging(this.sortBy, this.pagination, 3).subscribe((res: any) => {
             console.log("id da click:  " + this.sortBy)
-            this.Customers = res.data;
+            this.Customers = res.data.results;
             this.allCustomers = res.total;
-            console.log(res.data);
+            console.log(res.data.results);
          });
       }
    }

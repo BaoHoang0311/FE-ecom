@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <label>Customer</label>
                     <select formControlName="customerId" class="form-control" required
-                        [ngClass]="{'is-invalid': submitted && f['customerId'].errors }">
+                        [ngClass]="{'is-invalid': submitted && f['customerId'].errors }"  >
                         <option value="">Yêu cầu chọn</option>
                         <option *ngFor="let item of listCustomer" value="{{item.customerId}}">{{item.fullName}}</option>
                         <div *ngIf="submitted && f['customerId'].errors" class="invalid-feedback">

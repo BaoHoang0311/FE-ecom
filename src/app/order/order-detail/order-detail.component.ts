@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerServiceService } from 'src/app/services/customer/customer-service.service';
@@ -15,7 +15,10 @@ import { Product } from 'src/app/services/model/product.model';
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
 })
+
+
 export class OrderDetailComponent implements OnInit {
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,11 +53,13 @@ export class OrderDetailComponent implements OnInit {
   orderDetailDtos: any = OrderItem;
   orderIdinUrl: any = "";
 
+
+
   ngOnInit(): void {
 
     this.getAllCustomers();
     this.getAllProducts();
-    
+
     this.OrderForm = this.formBuilder.group(
       {
         orderNo: ['', [Validators.required, Validators.minLength(3)]],
@@ -71,6 +76,8 @@ export class OrderDetailComponent implements OnInit {
     else {
       this.apiOrder.orderItems = [];
     }
+
+
   };
 
   getOrderByID(id: any) {
@@ -114,7 +121,7 @@ export class OrderDetailComponent implements OnInit {
 
   // dropdown danh sách khách hàng
   getAllCustomers() {
-    this.apiCus.getAllCustomer().subscribe(
+    this.apiCus.getAllCustomerPaging('', 1, 113).subscribe(
       {
         next: (res) => {
           this.listCustomer = res.data.map((elem: Customer) => {
@@ -123,11 +130,11 @@ export class OrderDetailComponent implements OnInit {
               fullName: elem.fullName
             }
           });
+          console.log(`dasdas`, this.listCustomer);
         },
         error: (err) => { console.log(err); }
       });
   }
-
   onSubmit() {
 
     this.submitted = true;

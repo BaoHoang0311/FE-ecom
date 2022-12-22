@@ -62,13 +62,19 @@ export class CustomerDiaglogComponent implements OnInit {
 
   onReset(): void {
     this.submitted = false;
-    this.customerForm.reset();
+    console.log(this.customerForm);
+    this.customerForm = this.formBuilder.group(
+      {
+        fullName: ['', [Validators.required, Validators.minLength(3)]],
+        email: ['', [Validators.required, Validators.email]],
+        phone: ['', [Validators.required, Validators.pattern("[0-9 ]{10}")]],
+        address: ['', [Validators.required, Validators.minLength(3)]]
+      });
   }
 
   onSubmit() {
-
+    this.submitted = true;
     if (!this.editCustomerData) {
-      this.submitted = true;
       if (this.customerForm.invalid) {
         return;
       }
@@ -76,7 +82,7 @@ export class CustomerDiaglogComponent implements OnInit {
       this.cusapi.postCustomer(this.customerForm.value)
         .subscribe({
           next: (res) => {
-            console.log(res);
+            console.log('dasdasd',this.customerForm);
             if (res.statusCode === 200) {
               this.notifyService.showSuccess("Add Customer success!", "Thong bao");
               this.customerForm.reset();
@@ -96,7 +102,7 @@ export class CustomerDiaglogComponent implements OnInit {
       this.updateCustomer();
     }
   };
-  
+
   updateCustomer() {
     console.log(this.customerForm.value);
     this.cusapi.putCustomer(this.customerForm.value)

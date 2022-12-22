@@ -17,9 +17,9 @@ export class CustomerServiceService {
     return this.http.get<any>(this.url + `Customers?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}`);
   }
 
-  getAllCustomer() {
-    return this.http.get<any>(this.url + `all-cus`);
-  }
+  // getAllCustomer() {
+  //   return this.http.get<any>(this.url + `all-cus`);
+  // }
 
   putCustomer(data: any) {
     return this.http.put<any>(this.url + 'Customers', data);

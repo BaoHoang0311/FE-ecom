@@ -4,7 +4,7 @@
     <div class="form-group">
       <label>Full Name</label>
       <input type="text" formControlName="fullName" class="form-control"
-        [ngClass]="{'is-invalid': submitted && f['fullName'].errors }" />
+        [ngClass]="{'is-invalid': submitted && f['fullName'].errors }"  />
       <div *ngIf="submitted && f['fullName'].errors" class="invalid-feedback">
         <div *ngIf="f['fullName'].errors['required']">Fullname is required</div>
         <div *ngIf="f['fullName'].errors['minlength']">

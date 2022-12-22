@@ -37,7 +37,7 @@ export class BuyorderComponent implements OnInit {
           this.dataSource = new MatTableDataSource(res.data);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
-          console.log(res.data);
+          console.log(res.data.results);
         },
         error: (err) => { console.log(err); }
       });

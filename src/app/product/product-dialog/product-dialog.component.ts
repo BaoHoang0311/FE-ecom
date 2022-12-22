@@ -48,7 +48,9 @@ export class ProductDialogComponent implements OnInit {
           fullName: [this.editData.fullName, [Validators.required, Validators.minLength(3)]],
           amount: [this.editData.amount, [Validators.required, Validators.min(1), Validators.max(500),]],
         });
+
     }
+
   }
 
   get f(): { [key: string]: AbstractControl } {
@@ -107,7 +109,12 @@ export class ProductDialogComponent implements OnInit {
 
   onReset(): void {
     this.submitted = false;
-    this.productForm.reset();
+    this.productForm = this.formBuilder.group(
+      {
+        id: this.editData.id,
+        fullName: ['', [Validators.required, Validators.minLength(3)]],
+        amount: ['', [Validators.required, Validators.min(1), Validators.max(500),]],
+      });
   }
 }
 

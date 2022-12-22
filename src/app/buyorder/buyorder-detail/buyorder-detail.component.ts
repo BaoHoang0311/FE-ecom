@@ -150,7 +150,7 @@ export class BuyorderDetailComponent implements OnInit {
 
   // dropdown danh sách khách hàng
   getAllCustomers() {
-    this.apiCus.getAllCustomer().subscribe(
+    this.apiCus.getAllCustomerPaging('', 1, 113).subscribe(
       {
         next: (res) => {
           this.listCustomer = res.data.map((elem: Customer) => {
@@ -236,7 +236,7 @@ export class BuyorderDetailComponent implements OnInit {
       {
         width: '30%',
         height: '60%',
-        data: { idx: index, items: item, max: this.product}
+        data: { idx: index, items: item, max: this.product }
       }
     ).afterClosed().subscribe(val => {
       this.updateGrandTotal();

@@ -87,6 +87,9 @@ export class ProductComponent implements OnInit {
       {
         next: (res) => {
           this.dataSource = new MatTableDataSource(res.data);
+
+          console.log('res.data', res.data)
+
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
 
@@ -95,7 +98,7 @@ export class ProductComponent implements OnInit {
               this.options.push(`${res.data[i].fullName}`);
             }
           }
-          console.log(res.data);
+          console.log(res.data.results);
 
         },
         error: (err) => { console.log(err); }
