@@ -24,7 +24,6 @@ export class BuyorderDetailProductComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public editBuyOrderProductDetailData: any,
   ) { }
 
-
   listProduct: any = [];
   product: any;
   gtln: any;

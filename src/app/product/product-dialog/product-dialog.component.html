@@ -29,7 +29,8 @@
       <button type="button" (click)="onReset()" class="btn btn-warning">
         Reset
       </button>
-      <button type="submit" class="btn btn-primary float-right" mat-raised-button color="warn">
+      <button type="submit" class="btn btn-primary float-right" mat-raised-button color="warn"
+        [disabled]="productForm.invalid">
         {{actionBtn}}
       </button>
     </div>

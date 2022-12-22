@@ -93,7 +93,7 @@
         </table>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-dark" mat-raised-button color="warn"><i class="fa fa-database"></i>
+            <button type="submit" class="btn btn-dark" mat-raised-button color="warn" [disabled]="BuyOrderForm.invalid || apibuyOrder.buyorderItems.length==0">
                 Submit</button>
             <!-- <a class="btn btn-outline-dark ml-1" routerLink="/Order"><i class="fa fa-table"></i> View Orders</a> -->
         </div>
